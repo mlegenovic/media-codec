@@ -171,16 +171,16 @@ VIDEO_PROFILE_LEVEL_TYPE SupportedAVCProfileLevels[] ={
   {OMX_VIDEO_AVCProfileHigh, OMX_VIDEO_AVCLevel5},
   {OMX_VIDEO_AVCProfileHigh, OMX_VIDEO_AVCLevel51},
   {OMX_VIDEO_AVCProfileHigh, OMX_VIDEO_AVCLevelMax},
-  
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel1 },        
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel1b},      
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel11},     
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel12},     
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel13},    
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel2 },    
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel21},   
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel22},  
-  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel3 },  
+
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel1 },
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel1b},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel11},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel12},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel13},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel2 },
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel21},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel22},
+  {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel3 },
   {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel31},
   {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel32},
   {OMX_VIDEO_AVCProfileMain, OMX_VIDEO_AVCLevel4},
@@ -199,23 +199,23 @@ VIDEO_PROFILE_LEVEL_TYPE SupportedAVCProfileLevels[] ={
  * The initialization of OMX structures always sets up the nSize and nVersion fields
  *   of the structure.
  */
-#define OMX_CONF_INIT_STRUCT_PTR(_s_, _name_)	\
-    memset((_s_), 0x0, sizeof(_name_));	\
-    (_s_)->nSize = sizeof(_name_);		\
-    (_s_)->nVersion.s.nVersionMajor = 0x1;	\
-    (_s_)->nVersion.s.nVersionMinor = 0x1;	\
-    (_s_)->nVersion.s.nRevision = 0x0;		\
+#define OMX_CONF_INIT_STRUCT_PTR(_s_, _name_) \
+    memset((_s_), 0x0, sizeof(_name_));       \
+    (_s_)->nSize = sizeof(_name_);            \
+    (_s_)->nVersion.s.nVersionMajor = 0x1;    \
+    (_s_)->nVersion.s.nVersionMinor = 0x1;    \
+    (_s_)->nVersion.s.nRevision = 0x0;        \
     (_s_)->nVersion.s.nStep = 0x0
 
 
 
 static VIDDEC_CUSTOM_PARAM sVideoDecCustomParams[] =
 {
-	{VIDDEC_CUSTOMPARAM_ENABLE_ANDROID_NATIVE_BUFFER, (OMX_INDEXTYPE)AWOMX_IndexParamVideoEnableAndroidNativeBuffers},
-	{VIDDEC_CUSTOMPARAM_GET_ANDROID_NATIVE_BUFFER_USAGE, (OMX_INDEXTYPE)AWOMX_IndexParamVideoGetAndroidNativeBufferUsage},
-	{VIDDEC_CUSTOMPARAM_USE_ANDROID_NATIVE_BUFFER2, (OMX_INDEXTYPE)AWOMX_IndexParamVideoUseAndroidNativeBuffer2},
+    {VIDDEC_CUSTOMPARAM_ENABLE_ANDROID_NATIVE_BUFFER, (OMX_INDEXTYPE)AWOMX_IndexParamVideoEnableAndroidNativeBuffers},
+    {VIDDEC_CUSTOMPARAM_GET_ANDROID_NATIVE_BUFFER_USAGE, (OMX_INDEXTYPE)AWOMX_IndexParamVideoGetAndroidNativeBufferUsage},
+    {VIDDEC_CUSTOMPARAM_USE_ANDROID_NATIVE_BUFFER2, (OMX_INDEXTYPE)AWOMX_IndexParamVideoUseAndroidNativeBuffer2},
     {VIDDEC_CUSTOMPARAM_STORE_META_DATA_IN_BUFFER,(OMX_INDEXTYPE)AWOMX_IndexParamVideoUseStoreMetaDataInBuffer},
-	{VIDDEC_CUSTOMPARAM_PREPARE_FOR_ADAPTIVE_PLAYBACK,(OMX_INDEXTYPE)AWOMX_IndexParamVideoUsePrepareForAdaptivePlayback}
+    {VIDDEC_CUSTOMPARAM_PREPARE_FOR_ADAPTIVE_PLAYBACK,(OMX_INDEXTYPE)AWOMX_IndexParamVideoUsePrepareForAdaptivePlayback}
 };
 
 
@@ -223,39 +223,39 @@ static void* ComponentThread(void* pThreadData);
 static void* ComponentVdrvThread(void* pThreadData);
 
 #if CONFIG_OS == OPTION_OS_ANDROID
-    #define GET_CALLING_PID	(IPCThreadState::self()->getCallingPid())
+    #define GET_CALLING_PID    (IPCThreadState::self()->getCallingPid())
     void getCallingProcessName(char *name)
     {
-    	char proc_node[128];
+        char proc_node[128];
 
-    	if (name == 0)
-    	{
-    		logd("error in params");
-    		return;
-    	}
-    	
-    	memset(proc_node, 0, sizeof(proc_node));
-    	sprintf(proc_node, "/proc/%d/cmdline", GET_CALLING_PID);
-    	int fp = ::open(proc_node, O_RDONLY);
-    	if (fp > 0) 
-    	{
-    		memset(name, 0, 128);
-    		::read(fp, name, 128);
-    		::close(fp);
-    		fp = 0;
-    		logd("Calling process is: %s", name);
-    	}
-    	else 
-    	{
-    		logd("Obtain calling process failed");
-    	}
+        if (name == 0)
+        {
+            logd("error in params");
+            return;
+        }
+
+        memset(proc_node, 0, sizeof(proc_node));
+        sprintf(proc_node, "/proc/%d/cmdline", GET_CALLING_PID);
+        int fp = ::open(proc_node, O_RDONLY);
+        if (fp > 0)
+        {
+            memset(name, 0, 128);
+            ::read(fp, name, 128);
+            ::close(fp);
+            fp = 0;
+            logd("Calling process is: %s", name);
+        }
+        else
+        {
+            logd("Obtain calling process failed");
+        }
     }
 #endif
 
 //* factory function executed by the core to create instances
 void *get_omx_component_factory_fn(void)
 {
-	return (new omx_vdec);
+    return (new omx_vdec);
 }
 
 #if OPEN_LINUX_STATISTICS
@@ -288,24 +288,24 @@ void post_message_to_vdrv(omx_vdec *omx, OMX_S32 id)
 omx_vdec::omx_vdec()
 {
     logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
-	m_state              = OMX_StateLoaded;
-	m_cRole[0]           = 0;
-	m_cName[0]           = 0;
-	m_eCompressionFormat = OMX_VIDEO_CodingUnused;
-	m_pAppData           = NULL;
-	m_thread_id          = 0;
+    m_state              = OMX_StateLoaded;
+    m_cRole[0]           = 0;
+    m_cName[0]           = 0;
+    m_eCompressionFormat = OMX_VIDEO_CodingUnused;
+    m_pAppData           = NULL;
+    m_thread_id          = 0;
     m_vdrv_thread_id     = 0;
-	m_cmdpipe[0]         = 0;
-	m_cmdpipe[1]         = 0;
-	m_cmddatapipe[0]     = 0;
-	m_cmddatapipe[1]     = 0;
+    m_cmdpipe[0]         = 0;
+    m_cmdpipe[1]         = 0;
+    m_cmddatapipe[0]     = 0;
+    m_cmddatapipe[1]     = 0;
     m_vdrv_cmdpipe[0]    = 0;
     m_vdrv_cmdpipe[1]    = 0;
-	m_InputNum           = 0;
-	m_OutputNum          = 0;
+    m_InputNum           = 0;
+    m_OutputNum          = 0;
     m_maxWidth           = 0;
     m_maxHeight          = 0;
-	m_decoder            = NULL;
+    m_decoder            = NULL;
 
     m_storeOutputMetaDataFlag = OMX_FALSE;
     m_useAndroidBuffer        = OMX_FALSE;
@@ -317,33 +317,33 @@ omx_vdec::omx_vdec()
     mResolutionChangeFlag     = OMX_FALSE;
 
     memset(mCallingProcess,0,sizeof(mCallingProcess));
-    
-    
-#if CONFIG_OS == OPTION_OS_ANDROID    
-	getCallingProcessName(mCallingProcess);
-	if((strcmp(mCallingProcess, "com.android.cts.media") == 0) || (strcmp(mCallingProcess, "com.android.cts.videoperf") == 0) || (strcmp(mCallingProcess, "com.android.pts.videoperf") == 0))
-	{
-		mIsFromCts           = true;
-	}
+
+
+#if CONFIG_OS == OPTION_OS_ANDROID
+    getCallingProcessName(mCallingProcess);
+    if((strcmp(mCallingProcess, "com.android.cts.media") == 0) || (strcmp(mCallingProcess, "com.android.cts.videoperf") == 0) || (strcmp(mCallingProcess, "com.android.pts.videoperf") == 0))
+    {
+        mIsFromCts           = true;
+    }
 #endif
 
-	memset(&m_Callbacks, 0, sizeof(m_Callbacks));
-	memset(&m_sInPortDef, 0, sizeof(m_sInPortDef));
-	memset(&m_sOutPortDef, 0, sizeof(m_sOutPortDef));
-	memset(&m_sInPortFormat, 0, sizeof(m_sInPortFormat));
-	memset(&m_sOutPortFormat, 0, sizeof(m_sOutPortFormat));
-	memset(&m_sPriorityMgmt, 0, sizeof(m_sPriorityMgmt));
-	memset(&m_sInBufSupplier, 0, sizeof(m_sInBufSupplier));
-	memset(&m_sOutBufSupplier, 0, sizeof(m_sOutBufSupplier));
-	memset(&m_sInBufList, 0, sizeof(m_sInBufList));
-	memset(&m_sOutBufList, 0, sizeof(m_sOutBufList));
-	memset(&m_streamInfo, 0, sizeof(m_streamInfo));
+    memset(&m_Callbacks, 0, sizeof(m_Callbacks));
+    memset(&m_sInPortDef, 0, sizeof(m_sInPortDef));
+    memset(&m_sOutPortDef, 0, sizeof(m_sOutPortDef));
+    memset(&m_sInPortFormat, 0, sizeof(m_sInPortFormat));
+    memset(&m_sOutPortFormat, 0, sizeof(m_sOutPortFormat));
+    memset(&m_sPriorityMgmt, 0, sizeof(m_sPriorityMgmt));
+    memset(&m_sInBufSupplier, 0, sizeof(m_sInBufSupplier));
+    memset(&m_sOutBufSupplier, 0, sizeof(m_sOutBufSupplier));
+    memset(&m_sInBufList, 0, sizeof(m_sInBufList));
+    memset(&m_sOutBufList, 0, sizeof(m_sOutBufList));
+    memset(&m_streamInfo, 0, sizeof(m_streamInfo));
 
 
-	pthread_mutex_init(&m_inBufMutex, NULL);
-	pthread_mutex_init(&m_outBufMutex, NULL);
+    pthread_mutex_init(&m_inBufMutex, NULL);
+    pthread_mutex_init(&m_outBufMutex, NULL);
     pthread_mutex_init(&m_pipeMutex, NULL);
-    
+
     sem_init(&m_vdrv_cmd_lock,0,0);
     sem_init(&m_sem_vbs_input,0,0);
     sem_init(&m_sem_frame_output,0,0);
@@ -352,12 +352,12 @@ omx_vdec::omx_vdec()
 
 omx_vdec::~omx_vdec()
 {
-	OMX_S32 nIndex;
+    OMX_S32 nIndex;
     // In case the client crashes, check for nAllocSize parameter.
     // If this is greater than zero, there are elements in the list that are not free'd.
     // In that case, free the elements.
     logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
-	pthread_mutex_lock(&m_inBufMutex);
+    pthread_mutex_lock(&m_inBufMutex);
 
     for(nIndex=0; nIndex<m_sInBufList.nBufArrSize; nIndex++)
     {
@@ -365,7 +365,7 @@ omx_vdec::~omx_vdec()
         {
             break;
         }
-        
+
         if(m_sInBufList.pBufArr[nIndex].pBuffer != NULL)
         {
             if(m_sInBufList.nAllocBySelfFlags & (1<<nIndex))
@@ -377,46 +377,46 @@ omx_vdec::~omx_vdec()
     }
 
     if (m_sInBufList.pBufArr != NULL)
-    	free(m_sInBufList.pBufArr);
+        free(m_sInBufList.pBufArr);
 
     if (m_sInBufList.pBufHdrList != NULL)
-    	free(m_sInBufList.pBufHdrList);
+        free(m_sInBufList.pBufHdrList);
 
-	memset(&m_sInBufList, 0, sizeof(struct _BufferList));
-	m_sInBufList.nBufArrSize = m_sInPortDef.nBufferCountActual;
+    memset(&m_sInBufList, 0, sizeof(struct _BufferList));
+    m_sInBufList.nBufArrSize = m_sInPortDef.nBufferCountActual;
 
-	pthread_mutex_unlock(&m_inBufMutex);
+    pthread_mutex_unlock(&m_inBufMutex);
 
 
-	pthread_mutex_lock(&m_outBufMutex);
+    pthread_mutex_lock(&m_outBufMutex);
 
-	for(nIndex=0; nIndex<m_sOutBufList.nBufArrSize; nIndex++)
-	{
-		if(m_sOutBufList.pBufArr[nIndex].pBuffer != NULL)
-		{
-			if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
-			{
-				free(m_sOutBufList.pBufArr[nIndex].pBuffer);
-				m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
-			}
-		}
-	}
+    for(nIndex=0; nIndex<m_sOutBufList.nBufArrSize; nIndex++)
+    {
+        if(m_sOutBufList.pBufArr[nIndex].pBuffer != NULL)
+        {
+            if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
+            {
+                free(m_sOutBufList.pBufArr[nIndex].pBuffer);
+                m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
+            }
+        }
+    }
 
     if (m_sOutBufList.pBufArr != NULL)
-    	free(m_sOutBufList.pBufArr);
+        free(m_sOutBufList.pBufArr);
 
     if (m_sOutBufList.pBufHdrList != NULL)
-    	free(m_sOutBufList.pBufHdrList);
+        free(m_sOutBufList.pBufHdrList);
 
-	memset(&m_sOutBufList, 0, sizeof(struct _BufferList));
-	m_sOutBufList.nBufArrSize = m_sOutPortDef.nBufferCountActual;
+    memset(&m_sOutBufList, 0, sizeof(struct _BufferList));
+    m_sOutBufList.nBufArrSize = m_sOutPortDef.nBufferCountActual;
 
-	pthread_mutex_unlock(&m_outBufMutex);
+    pthread_mutex_unlock(&m_outBufMutex);
 
     if(m_decoder != NULL)
     {
-    	DestroyVideoDecoder(m_decoder);
-    	m_decoder = NULL;
+        DestroyVideoDecoder(m_decoder);
+        m_decoder = NULL;
     }
 
     pthread_mutex_destroy(&m_inBufMutex);
@@ -429,7 +429,7 @@ omx_vdec::~omx_vdec()
 
     if(m_streamInfo.pCodecSpecificData)
         free(m_streamInfo.pCodecSpecificData);
-    
+
 #if (OPEN_STATISTICS)
     if(mDecodeFrameTotalCount!=0 && mConvertTotalCount!=0)
     {
@@ -470,74 +470,77 @@ omx_vdec::~omx_vdec()
 
 OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
 {
-	OMX_ERRORTYPE eRet = OMX_ErrorNone;
+    OMX_ERRORTYPE eRet = OMX_ErrorNone;
     int           err;
     OMX_U32       nIndex;
 
     logi("(f:%s, l:%d) name = %s", __FUNCTION__, __LINE__, name);
-	strncpy((char*)m_cName, name, OMX_MAX_STRINGNAME_SIZE);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    strncpy((char*)m_cName, name, OMX_MAX_STRINGNAME_SIZE);
+#pragma GCC diagnostic pop
 
     if (!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingMPEG1;
+    {
+        strncpy((char *)m_cRole, "video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingMPEG1;
         m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_MPEG1;
-	}
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mjpeg", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.mjpeg", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingMJPEG;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_MJPEG;
-	}
+    {
+        strncpy((char *)m_cRole, "video_decoder.mjpeg", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingMJPEG;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_MJPEG;
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingMPEG2;
+    {
+        strncpy((char *)m_cRole, "video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingMPEG2;
         m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_MPEG2;
-	}
-	else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char*)m_cRole, "video_decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingMPEG4;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_XVID;
-	}
+    }
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
+    {
+        strncpy((char*)m_cRole, "video_decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingMPEG4;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_XVID;
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.xvid", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char*)m_cRole, "video_decoder.xvid", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingXVID;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_XVID;
-	}
-	else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.h263", OMX_MAX_STRINGNAME_SIZE);
-		logi("\n H263 Decoder selected");
-		m_eCompressionFormat      = OMX_VIDEO_CodingH263;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_H263;
-	}
+    {
+        strncpy((char*)m_cRole, "video_decoder.xvid", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingXVID;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_XVID;
+    }
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
+    {
+        strncpy((char *)m_cRole, "video_decoder.h263", OMX_MAX_STRINGNAME_SIZE);
+        logi("\n H263 Decoder selected");
+        m_eCompressionFormat      = OMX_VIDEO_CodingH263;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_H263;
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.avc", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.avc", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingAVC;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_H264;
-	}
+    {
+        strncpy((char *)m_cRole, "video_decoder.avc", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingAVC;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_H264;
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vc1", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.vc1", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingWMV;
-		m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_WMV3;
-	}
+    {
+        strncpy((char *)m_cRole, "video_decoder.vc1", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingWMV;
+        m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_WMV3;
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vp8", OMX_MAX_STRINGNAME_SIZE))
-	{
-		strncpy((char *)m_cRole, "video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE);
-		m_eCompressionFormat      = OMX_VIDEO_CodingVP8; //OMX_VIDEO_CodingVPX
+    {
+        strncpy((char *)m_cRole, "video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE);
+        m_eCompressionFormat      = OMX_VIDEO_CodingVP8; //OMX_VIDEO_CodingVPX
         m_streamInfo.eCodecFormat = VIDEO_CODEC_FORMAT_VP8;
-	}
-	else
-	{
-		logi("ERROR:Unknown Component");
-	    eRet = OMX_ErrorInvalidComponentName;
-	    return eRet;
-	}
+    }
+    else
+    {
+        logi("ERROR:Unknown Component");
+        eRet = OMX_ErrorInvalidComponentName;
+        return eRet;
+    }
 
     // Initialize component data structures to default values
     OMX_CONF_INIT_STRUCT_PTR(&m_sPortParam, OMX_PORT_PARAM_TYPE);
@@ -546,33 +549,33 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
 
     // Initialize the video parameters for input port
     OMX_CONF_INIT_STRUCT_PTR(&m_sInPortDef, OMX_PARAM_PORTDEFINITIONTYPE);
-    m_sInPortDef.nPortIndex 					 = 0x0;
-    m_sInPortDef.bEnabled 						 = OMX_TRUE;
-    m_sInPortDef.bPopulated 					 = OMX_FALSE;
-    m_sInPortDef.eDomain 						 = OMX_PortDomainVideo;
-    m_sInPortDef.format.video.nFrameWidth 		 = 0;
-    m_sInPortDef.format.video.nFrameHeight 		 = 0;
-    m_sInPortDef.eDir 							 = OMX_DirInput;
-    m_sInPortDef.nBufferCountMin 				 = NUM_IN_BUFFERS;
-    m_sInPortDef.nBufferCountActual 			 = NUM_IN_BUFFERS;
-    m_sInPortDef.nBufferSize 					 = OMX_VIDEO_DEC_INPUT_BUFFER_SIZE;
-    m_sInPortDef.format.video.eCompressionFormat = m_eCompressionFormat;
-    m_sInPortDef.format.video.cMIMEType 		 = (OMX_STRING)"";
+    m_sInPortDef.nPortIndex                       = 0x0;
+    m_sInPortDef.bEnabled                         = OMX_TRUE;
+    m_sInPortDef.bPopulated                       = OMX_FALSE;
+    m_sInPortDef.eDomain                          = OMX_PortDomainVideo;
+    m_sInPortDef.format.video.nFrameWidth         = 0;
+    m_sInPortDef.format.video.nFrameHeight        = 0;
+    m_sInPortDef.eDir                             = OMX_DirInput;
+    m_sInPortDef.nBufferCountMin                  = NUM_IN_BUFFERS;
+    m_sInPortDef.nBufferCountActual               = NUM_IN_BUFFERS;
+    m_sInPortDef.nBufferSize                      = OMX_VIDEO_DEC_INPUT_BUFFER_SIZE;
+    m_sInPortDef.format.video.eCompressionFormat  = m_eCompressionFormat;
+    m_sInPortDef.format.video.cMIMEType           = (OMX_STRING)"";
 
     // Initialize the video parameters for output port
     OMX_CONF_INIT_STRUCT_PTR(&m_sOutPortDef, OMX_PARAM_PORTDEFINITIONTYPE);
-    m_sOutPortDef.nPortIndex 				     = 0x1;
-    m_sOutPortDef.bEnabled 					     = OMX_TRUE;
-    m_sOutPortDef.bPopulated 				     = OMX_FALSE;
-    m_sOutPortDef.eDomain 					     = OMX_PortDomainVideo;
-    m_sOutPortDef.format.video.cMIMEType 	     = (OMX_STRING)"YUV420";
-    m_sOutPortDef.format.video.nFrameWidth 	     = 176;
-    m_sOutPortDef.format.video.nFrameHeight      = 144;
-    m_sOutPortDef.eDir 						     = OMX_DirOutput;
-    m_sOutPortDef.nBufferCountMin 			     = NUM_OUT_BUFFERS;
-    m_sOutPortDef.nBufferCountActual 		     = NUM_OUT_BUFFERS;
-    m_sOutPortDef.nBufferSize 				     = (OMX_U32)(m_sOutPortDef.format.video.nFrameWidth*m_sOutPortDef.format.video.nFrameHeight*3/2);
-    m_sOutPortDef.format.video.eColorFormat      = OMX_COLOR_FormatYUV420Planar;
+    m_sOutPortDef.nPortIndex                      = 0x1;
+    m_sOutPortDef.bEnabled                        = OMX_TRUE;
+    m_sOutPortDef.bPopulated                      = OMX_FALSE;
+    m_sOutPortDef.eDomain                         = OMX_PortDomainVideo;
+    m_sOutPortDef.format.video.cMIMEType          = (OMX_STRING)"YUV420";
+    m_sOutPortDef.format.video.nFrameWidth        = 176;
+    m_sOutPortDef.format.video.nFrameHeight       = 144;
+    m_sOutPortDef.eDir                            = OMX_DirOutput;
+    m_sOutPortDef.nBufferCountMin                 = NUM_OUT_BUFFERS;
+    m_sOutPortDef.nBufferCountActual              = NUM_OUT_BUFFERS;
+    m_sOutPortDef.nBufferSize                     = (OMX_U32)(m_sOutPortDef.format.video.nFrameWidth*m_sOutPortDef.format.video.nFrameHeight*3/2);
+    m_sOutPortDef.format.video.eColorFormat       = OMX_COLOR_FormatYUV420Planar;
 
     // Initialize the video compression format for input port
     OMX_CONF_INIT_STRUCT_PTR(&m_sInPortFormat, OMX_VIDEO_PARAM_PORTFORMATTYPE);
@@ -600,8 +603,8 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     m_sInBufList.pBufArr = (OMX_BUFFERHEADERTYPE*)malloc(sizeof(OMX_BUFFERHEADERTYPE) * m_sInPortDef.nBufferCountActual);
     if(m_sInBufList.pBufArr == NULL)
     {
-    	eRet = OMX_ErrorInsufficientResources;
-    	goto EXIT;
+        eRet = OMX_ErrorInsufficientResources;
+        goto EXIT;
     }
 
     memset(m_sInBufList.pBufArr, 0, sizeof(OMX_BUFFERHEADERTYPE) * m_sInPortDef.nBufferCountActual);
@@ -614,8 +617,8 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     m_sInBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**)malloc(sizeof(OMX_BUFFERHEADERTYPE*) * m_sInPortDef.nBufferCountActual);
     if(m_sInBufList.pBufHdrList == NULL)
     {
-    	eRet = OMX_ErrorInsufficientResources;
-    	goto EXIT;
+        eRet = OMX_ErrorInsufficientResources;
+        goto EXIT;
     }
 
     m_sInBufList.nSizeOfList       = 0;
@@ -633,8 +636,8 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     m_sOutBufList.pBufArr = (OMX_BUFFERHEADERTYPE*)malloc(sizeof(OMX_BUFFERHEADERTYPE) * m_sOutPortDef.nBufferCountActual);
     if(m_sOutBufList.pBufArr == NULL)
     {
-    	eRet = OMX_ErrorInsufficientResources;
-    	goto EXIT;
+        eRet = OMX_ErrorInsufficientResources;
+        goto EXIT;
     }
 
     memset(m_sOutBufList.pBufArr, 0, sizeof(OMX_BUFFERHEADERTYPE) * m_sOutPortDef.nBufferCountActual);
@@ -646,8 +649,8 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     m_sOutBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**)malloc(sizeof(OMX_BUFFERHEADERTYPE*) * m_sOutPortDef.nBufferCountActual);
     if(m_sOutBufList.pBufHdrList == NULL)
     {
-    	eRet = OMX_ErrorInsufficientResources;
-    	goto EXIT;
+        eRet = OMX_ErrorInsufficientResources;
+        goto EXIT;
     }
 
     m_sOutBufList.nSizeOfList       = 0;
@@ -663,14 +666,14 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     err = pipe(m_cmdpipe);
     if (err)
     {
-    	eRet = OMX_ErrorInsufficientResources;
+        eRet = OMX_ErrorInsufficientResources;
         goto EXIT;
     }
     // Create the pipe used to send command to the vdrv_thread
     err = pipe(m_vdrv_cmdpipe);
     if (err)
     {
-    	eRet = OMX_ErrorInsufficientResources;
+        eRet = OMX_ErrorInsufficientResources;
         goto EXIT;
     }
 
@@ -678,7 +681,7 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     err = pipe(m_cmddatapipe);
     if (err)
     {
-    	eRet = OMX_ErrorInsufficientResources;
+        eRet = OMX_ErrorInsufficientResources;
         goto EXIT;
     }
     //* create a decoder.
@@ -687,28 +690,28 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     m_decoder = CreateVideoDecoder();
     if(m_decoder == NULL)
     {
-    	logi(" can not create video decoder.");
-    	eRet = OMX_ErrorInsufficientResources;
-    	goto EXIT;
+        logi(" can not create video decoder.");
+        eRet = OMX_ErrorInsufficientResources;
+        goto EXIT;
     }
     */
-    
-	//*set omx cts flag to flush the last frame in h264
-	//m_decoder->ioctrl(m_decoder, CEDARV_COMMAND_SET_OMXCTS_DECODER, 1);
-	
+
+    //*set omx cts flag to flush the last frame in h264
+    //m_decoder->ioctrl(m_decoder, CEDARV_COMMAND_SET_OMXCTS_DECODER, 1);
+
     // Create the component thread
     err = pthread_create(&m_thread_id, NULL, ComponentThread, this);
     if( err || !m_thread_id )
     {
-    	eRet = OMX_ErrorInsufficientResources;
+        eRet = OMX_ErrorInsufficientResources;
         goto EXIT;
     }
-    
+
     // Create vdrv thread
     err = pthread_create(&m_vdrv_thread_id, NULL, ComponentVdrvThread, this);
     if( err || !m_vdrv_thread_id )
     {
-    	eRet = OMX_ErrorInsufficientResources;
+        eRet = OMX_ErrorInsufficientResources;
         goto EXIT;
     }
 
@@ -726,11 +729,11 @@ OMX_ERRORTYPE omx_vdec::component_init(OMX_STRING name)
     mDecodeFrameBigAverageDuration      = 0;
     mDecodeNoFrameAverageDuration       = 0;
     mDecodeNoBitstreamAverageDuration   = 0;
-    
+
     mConvertTotalDuration               = 0;
     mConvertTotalCount                  = 0;
     mConvertAverageDuration             = 0;
-    
+
 EXIT:
     return eRet;
 }
@@ -760,7 +763,7 @@ OMX_ERRORTYPE  omx_vdec::get_component_version(OMX_IN OMX_HANDLETYPE hComp,
     specVersion->s.nRevision     = 0;
     specVersion->s.nStep         = 0;
 
-	return OMX_ErrorNone;
+    return OMX_ErrorNone;
 }
 
 
@@ -775,58 +778,58 @@ OMX_ERRORTYPE  omx_vdec::send_command(OMX_IN OMX_HANDLETYPE  hComp,
 
     if(m_state == OMX_StateInvalid)
     {
-    	logd("ERROR: Send Command in Invalid State\n");
+        logd("ERROR: Send Command in Invalid State\n");
         return OMX_ErrorInvalidState;
     }
 
     if (cmd == OMX_CommandMarkBuffer && cmdData == NULL)
     {
-    	logd("ERROR: Send OMX_CommandMarkBuffer command but pCmdData invalid.");
-    	return OMX_ErrorBadParameter;
+        logd("ERROR: Send OMX_CommandMarkBuffer command but pCmdData invalid.");
+        return OMX_ErrorBadParameter;
     }
 
     switch (cmd)
     {
         case OMX_CommandStateSet:
-        	logi(" COMPONENT_SEND_COMMAND: OMX_CommandStateSet");
+            logi(" COMPONENT_SEND_COMMAND: OMX_CommandStateSet");
             eCmd = SetState;
-	        break;
+            break;
 
         case OMX_CommandFlush:
-        	logi(" COMPONENT_SEND_COMMAND: OMX_CommandFlush");
-	        eCmd = Flush;
-	        if ((int)param1 > 1 && (int)param1 != -1)
-	        {
-	        	logd("Error: Send OMX_CommandFlush command but param1 invalid.");
-	        	return OMX_ErrorBadPortIndex;
-	        }
-	        break;
+            logi(" COMPONENT_SEND_COMMAND: OMX_CommandFlush");
+            eCmd = Flush;
+            if ((int)param1 > 1 && (int)param1 != -1)
+            {
+                logd("Error: Send OMX_CommandFlush command but param1 invalid.");
+                return OMX_ErrorBadPortIndex;
+            }
+            break;
 
         case OMX_CommandPortDisable:
-        	logi(" COMPONENT_SEND_COMMAND: OMX_CommandPortDisable");
-	        eCmd = StopPort;
-	        break;
+            logi(" COMPONENT_SEND_COMMAND: OMX_CommandPortDisable");
+            eCmd = StopPort;
+            break;
 
         case OMX_CommandPortEnable:
-        	logi(" COMPONENT_SEND_COMMAND: OMX_CommandPortEnable");
-	        eCmd = RestartPort;
-	        break;
+            logi(" COMPONENT_SEND_COMMAND: OMX_CommandPortEnable");
+            eCmd = RestartPort;
+            break;
 
         case OMX_CommandMarkBuffer:
-        	logi(" COMPONENT_SEND_COMMAND: OMX_CommandMarkBuffer");
-	        eCmd = MarkBuf;
- 	        if (param1 > 0)
-	        {
-	        	logd("Error: Send OMX_CommandMarkBuffer command but param1 invalid.");
-	        	return OMX_ErrorBadPortIndex;
-	        }
+            logi(" COMPONENT_SEND_COMMAND: OMX_CommandMarkBuffer");
+            eCmd = MarkBuf;
+             if (param1 > 0)
+            {
+                logd("Error: Send OMX_CommandMarkBuffer command but param1 invalid.");
+                return OMX_ErrorBadPortIndex;
+            }
             break;
-            
+
         default:
             logw("(f:%s, l:%d) ignore other command[0x%x]", __FUNCTION__, __LINE__, cmd);
             return OMX_ErrorBadParameter;
     }
-    
+
     post_event(eCmd, param1, cmdData);
 
     return eError;
@@ -842,99 +845,99 @@ OMX_ERRORTYPE  omx_vdec::get_parameter(OMX_IN OMX_HANDLETYPE hComp,
     logi("(f:%s, l:%d) paramIndex = 0x%x", __FUNCTION__, __LINE__, paramIndex);
     if(m_state == OMX_StateInvalid)
     {
-    	logi("Get Param in Invalid State\n");
+        logi("Get Param in Invalid State\n");
         return OMX_ErrorInvalidState;
     }
 
     if(paramData == NULL)
     {
-    	logi("Get Param in Invalid paramData \n");
+        logi("Get Param in Invalid paramData \n");
         return OMX_ErrorBadParameter;
     }
-    
+
     switch(paramIndex)
     {
-    	case OMX_IndexParamVideoInit:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoInit");
-	        memcpy(paramData, &m_sPortParam, sizeof(OMX_PORT_PARAM_TYPE));
-    		break;
-    	}
+        case OMX_IndexParamVideoInit:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoInit");
+            memcpy(paramData, &m_sPortParam, sizeof(OMX_PORT_PARAM_TYPE));
+            break;
+        }
 
-    	case OMX_IndexParamPortDefinition:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamPortDefinition");
-	        if (((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex == m_sInPortDef.nPortIndex)
-	        {
-	            memcpy(paramData, &m_sInPortDef, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
+        case OMX_IndexParamPortDefinition:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamPortDefinition");
+            if (((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex == m_sInPortDef.nPortIndex)
+            {
+                memcpy(paramData, &m_sInPortDef, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
                 logi(" get_OMX_IndexParamPortDefinition: m_sInPortDef.nPortIndex[%d]", (int)m_sInPortDef.nPortIndex);
-	        }
-	        else if (((OMX_PARAM_PORTDEFINITIONTYPE*)(paramData))->nPortIndex == m_sOutPortDef.nPortIndex)
-	        {
-	            //logd("*** before , m_sOutPortDef.nBufferSize = %lu",m_sOutPortDef.nBufferSize);
-	            //m_sOutPortDef.nBufferSize  = (OMX_U32)(m_sOutPortDef.format.video.nFrameWidth*m_sOutPortDef.format.video.nFrameHeight*3/2);//* test
+            }
+            else if (((OMX_PARAM_PORTDEFINITIONTYPE*)(paramData))->nPortIndex == m_sOutPortDef.nPortIndex)
+            {
+                //logd("*** before , m_sOutPortDef.nBufferSize = %lu",m_sOutPortDef.nBufferSize);
+                //m_sOutPortDef.nBufferSize  = (OMX_U32)(m_sOutPortDef.format.video.nFrameWidth*m_sOutPortDef.format.video.nFrameHeight*3/2);//* test
                 //logd("*** after , m_sOutPortDef.nBufferSize = %lu",m_sOutPortDef.nBufferSize);
                 memcpy(paramData, &m_sOutPortDef, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
-	            logi("(omx_vdec, f:%s, l:%d) OMX_IndexParamPortDefinition, width = %d, height = %d, nPortIndex[%d], nBufferCountActual[%d], nBufferCountMin[%d], nBufferSize[%d]", __FUNCTION__, __LINE__, 
+                logi("(omx_vdec, f:%s, l:%d) OMX_IndexParamPortDefinition, width = %d, height = %d, nPortIndex[%d], nBufferCountActual[%d], nBufferCountMin[%d], nBufferSize[%d]", __FUNCTION__, __LINE__,
                     (int)m_sOutPortDef.format.video.nFrameWidth, (int)m_sOutPortDef.format.video.nFrameHeight,
                     (int)m_sOutPortDef.nPortIndex, (int)m_sOutPortDef.nBufferCountActual, (int)m_sOutPortDef.nBufferCountMin, (int)m_sOutPortDef.nBufferSize);
-	        }
-	        else
-	        {
-	            eError = OMX_ErrorBadPortIndex;
+            }
+            else
+            {
+                eError = OMX_ErrorBadPortIndex;
                 logw(" get_OMX_IndexParamPortDefinition: error. paramData->nPortIndex=[%d]", (int)((OMX_PARAM_PORTDEFINITIONTYPE*)(paramData))->nPortIndex);
-	        }
+            }
 
-    		break;
-    	}
+            break;
+        }
 
-    	case OMX_IndexParamVideoPortFormat:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoPortFormat");
- 	        if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nPortIndex == m_sInPortFormat.nPortIndex)
- 	        {
- 	            if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sInPortFormat.nIndex)
-		            eError = OMX_ErrorNoMore;
-		        else
-		            memcpy(paramData, &m_sInPortFormat, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
-		    }
-	        else if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nPortIndex == m_sOutPortFormat.nPortIndex)
-	        {
-	            if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sOutPortFormat.nIndex)
-		            eError = OMX_ErrorNoMore;
-		        else
-		            memcpy(paramData, &m_sOutPortFormat, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
-		    }
-		    else
-		        eError = OMX_ErrorBadPortIndex;
+        case OMX_IndexParamVideoPortFormat:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoPortFormat");
+             if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nPortIndex == m_sInPortFormat.nPortIndex)
+             {
+                 if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sInPortFormat.nIndex)
+                    eError = OMX_ErrorNoMore;
+                else
+                    memcpy(paramData, &m_sInPortFormat, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
+            }
+            else if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nPortIndex == m_sOutPortFormat.nPortIndex)
+            {
+                if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sOutPortFormat.nIndex)
+                    eError = OMX_ErrorNoMore;
+                else
+                    memcpy(paramData, &m_sOutPortFormat, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
+            }
+            else
+                eError = OMX_ErrorBadPortIndex;
 
             logi("OMX_IndexParamVideoPortFormat, eError[0x%x]", eError);
-	        break;
-    	}
+            break;
+        }
 
-    	case OMX_IndexParamStandardComponentRole:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamStandardComponentRole");
-    		OMX_PARAM_COMPONENTROLETYPE* comp_role;
+        case OMX_IndexParamStandardComponentRole:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamStandardComponentRole");
+            OMX_PARAM_COMPONENTROLETYPE* comp_role;
 
-    		comp_role                    = (OMX_PARAM_COMPONENTROLETYPE *) paramData;
-    		comp_role->nVersion.nVersion = OMX_SPEC_VERSION;
-    		comp_role->nSize             = sizeof(*comp_role);
+            comp_role                    = (OMX_PARAM_COMPONENTROLETYPE *) paramData;
+            comp_role->nVersion.nVersion = OMX_SPEC_VERSION;
+            comp_role->nSize             = sizeof(*comp_role);
 
-    		strncpy((char*)comp_role->cRole, (const char*)m_cRole, OMX_MAX_STRINGNAME_SIZE);
-    		break;
-    	}
+            strncpy((char*)comp_role->cRole, (const char*)m_cRole, OMX_MAX_STRINGNAME_SIZE);
+            break;
+        }
 
-    	case OMX_IndexParamPriorityMgmt:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamPriorityMgmt");
-	        memcpy(paramData, &m_sPriorityMgmt, sizeof(OMX_PRIORITYMGMTTYPE));
-    		break;
-    	}
+        case OMX_IndexParamPriorityMgmt:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamPriorityMgmt");
+            memcpy(paramData, &m_sPriorityMgmt, sizeof(OMX_PRIORITYMGMTTYPE));
+            break;
+        }
 
-    	case OMX_IndexParamCompBufferSupplier:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamCompBufferSupplier");
+        case OMX_IndexParamCompBufferSupplier:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamCompBufferSupplier");
             OMX_PARAM_BUFFERSUPPLIERTYPE* pBuffSupplierParam = (OMX_PARAM_BUFFERSUPPLIERTYPE*)paramData;
 
             if (pBuffSupplierParam->nPortIndex == 1)
@@ -950,142 +953,142 @@ OMX_ERRORTYPE  omx_vdec::get_parameter(OMX_IN OMX_HANDLETYPE hComp,
                 eError = OMX_ErrorBadPortIndex;
             }
 
-    		break;
-    	}
-
-    	case OMX_IndexParamAudioInit:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamAudioInit");
-    		OMX_PORT_PARAM_TYPE *audioPortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
-
-    		audioPortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
-    		audioPortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
-    		audioPortParamType->nPorts            = 0;
-    		audioPortParamType->nStartPortNumber  = 0;
-
-    		break;
-    	}
-
-    	case OMX_IndexParamImageInit:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamImageInit");
-    		OMX_PORT_PARAM_TYPE *imagePortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
-
-    		imagePortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
-    		imagePortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
-    		imagePortParamType->nPorts            = 0;
-    		imagePortParamType->nStartPortNumber  = 0;
-
-    		break;
-    	}
-
-    	case OMX_IndexParamOtherInit:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamOtherInit");
-    		OMX_PORT_PARAM_TYPE *otherPortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
-
-    		otherPortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
-    		otherPortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
-    		otherPortParamType->nPorts            = 0;
-    		otherPortParamType->nStartPortNumber  = 0;
-
-    		break;
-    	}
-
-    	case OMX_IndexParamVideoAvc:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoAvc");
-        	logi("get_parameter: OMX_IndexParamVideoAvc, do nothing.\n");
             break;
-    	}
+        }
 
-    	case OMX_IndexParamVideoH263:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoH263");
-        	logi("get_parameter: OMX_IndexParamVideoH263, do nothing.\n");
-            break;
-    	}
+        case OMX_IndexParamAudioInit:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamAudioInit");
+            OMX_PORT_PARAM_TYPE *audioPortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
 
-    	case OMX_IndexParamVideoMpeg4:
-    	{
-    		logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoMpeg4");
-        	logi("get_parameter: OMX_IndexParamVideoMpeg4, do nothing.\n");
+            audioPortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
+            audioPortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
+            audioPortParamType->nPorts            = 0;
+            audioPortParamType->nStartPortNumber  = 0;
+
             break;
-    	}
+        }
+
+        case OMX_IndexParamImageInit:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamImageInit");
+            OMX_PORT_PARAM_TYPE *imagePortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
+
+            imagePortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
+            imagePortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
+            imagePortParamType->nPorts            = 0;
+            imagePortParamType->nStartPortNumber  = 0;
+
+            break;
+        }
+
+        case OMX_IndexParamOtherInit:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamOtherInit");
+            OMX_PORT_PARAM_TYPE *otherPortParamType = (OMX_PORT_PARAM_TYPE *) paramData;
+
+            otherPortParamType->nVersion.nVersion = OMX_SPEC_VERSION;
+            otherPortParamType->nSize             = sizeof(OMX_PORT_PARAM_TYPE);
+            otherPortParamType->nPorts            = 0;
+            otherPortParamType->nStartPortNumber  = 0;
+
+            break;
+        }
+
+        case OMX_IndexParamVideoAvc:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoAvc");
+            logi("get_parameter: OMX_IndexParamVideoAvc, do nothing.\n");
+            break;
+        }
+
+        case OMX_IndexParamVideoH263:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoH263");
+            logi("get_parameter: OMX_IndexParamVideoH263, do nothing.\n");
+            break;
+        }
+
+        case OMX_IndexParamVideoMpeg4:
+        {
+            logi(" COMPONENT_GET_PARAMETER: OMX_IndexParamVideoMpeg4");
+            logi("get_parameter: OMX_IndexParamVideoMpeg4, do nothing.\n");
+            break;
+        }
         case OMX_IndexParamVideoProfileLevelQuerySupported:
         {
-        	VIDEO_PROFILE_LEVEL_TYPE* pProfileLevel = NULL;
-        	OMX_U32 nNumberOfProfiles = 0;
-        	OMX_VIDEO_PARAM_PROFILELEVELTYPE *pParamProfileLevel = (OMX_VIDEO_PARAM_PROFILELEVELTYPE *)paramData;
+            VIDEO_PROFILE_LEVEL_TYPE* pProfileLevel = NULL;
+            OMX_U32 nNumberOfProfiles = 0;
+            OMX_VIDEO_PARAM_PROFILELEVELTYPE *pParamProfileLevel = (OMX_VIDEO_PARAM_PROFILELEVELTYPE *)paramData;
 
-        	pParamProfileLevel->nPortIndex = m_sInPortDef.nPortIndex;
+            pParamProfileLevel->nPortIndex = m_sInPortDef.nPortIndex;
 
-        	/* Choose table based on compression format */
-        	switch(m_sInPortDef.format.video.eCompressionFormat)
-        	{
-        	case OMX_VIDEO_CodingH263:
-        		pProfileLevel = SupportedH263ProfileLevels;
-        		nNumberOfProfiles = sizeof(SupportedH263ProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
-        		break;
-
-        	case OMX_VIDEO_CodingMPEG4:
-        		pProfileLevel = SupportedMPEG4ProfileLevels;
-        		nNumberOfProfiles = sizeof(SupportedMPEG4ProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
-        		break;
-
-        	case OMX_VIDEO_CodingAVC:
-			if (mIsFromCts == true){
-				pProfileLevel = CTSSupportedAVCProfileLevels;
-				nNumberOfProfiles = sizeof(CTSSupportedAVCProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
-			}else{
-				pProfileLevel = SupportedAVCProfileLevels;
-				nNumberOfProfiles = sizeof(SupportedAVCProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
-			}
-			break;
-
-        	default:
-                logw("OMX_IndexParamVideoProfileLevelQuerySupported, Format[0x%x] not support", m_sInPortDef.format.video.eCompressionFormat);
-        		return OMX_ErrorBadParameter;
-        	}
-
-        	if(((int)pParamProfileLevel->nProfileIndex < 0) || (pParamProfileLevel->nProfileIndex >= (nNumberOfProfiles - 1)))
-        	{
-                logw("pParamProfileLevel->nProfileIndex[0x%x] error!", (unsigned int)pParamProfileLevel->nProfileIndex);
-        		return OMX_ErrorBadParameter;
-        	}
-
-        	/* Point to table entry based on index */
-        	pProfileLevel += pParamProfileLevel->nProfileIndex;
-
-        	/* -1 indicates end of table */
-        	if(pProfileLevel->nProfile != -1)
-        	{
-        		pParamProfileLevel->eProfile = pProfileLevel->nProfile;
-        		pParamProfileLevel->eLevel = pProfileLevel->nLevel;
-        		eError = OMX_ErrorNone;
-        	}
-        	else
-        	{
-                logw("pProfileLevel->nProfile error!");
-        		eError = OMX_ErrorNoMore;
-        	}
-
-        	break;
-        }
-    	default:
-    	{
-    		if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoGetAndroidNativeBufferUsage)
-    		{
-        		logi(" COMPONENT_GET_PARAMETER: AWOMX_IndexParamVideoGetAndroidNativeBufferUsage");
+            /* Choose table based on compression format */
+            switch(m_sInPortDef.format.video.eCompressionFormat)
+            {
+            case OMX_VIDEO_CodingH263:
+                pProfileLevel = SupportedH263ProfileLevels;
+                nNumberOfProfiles = sizeof(SupportedH263ProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
                 break;
-    		}
-    		else
-    		{
-        		logi("get_parameter: unknown param %08x\n", paramIndex);
-        		eError =OMX_ErrorUnsupportedIndex;
-        		break;
-    		}
-    	}
+
+            case OMX_VIDEO_CodingMPEG4:
+                pProfileLevel = SupportedMPEG4ProfileLevels;
+                nNumberOfProfiles = sizeof(SupportedMPEG4ProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
+                break;
+
+            case OMX_VIDEO_CodingAVC:
+            if (mIsFromCts == true){
+                pProfileLevel = CTSSupportedAVCProfileLevels;
+                nNumberOfProfiles = sizeof(CTSSupportedAVCProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
+            }else{
+                pProfileLevel = SupportedAVCProfileLevels;
+                nNumberOfProfiles = sizeof(SupportedAVCProfileLevels) / sizeof (VIDEO_PROFILE_LEVEL_TYPE);
+            }
+            break;
+
+            default:
+                logw("OMX_IndexParamVideoProfileLevelQuerySupported, Format[0x%x] not support", m_sInPortDef.format.video.eCompressionFormat);
+                return OMX_ErrorBadParameter;
+            }
+
+            if(((int)pParamProfileLevel->nProfileIndex < 0) || (pParamProfileLevel->nProfileIndex >= (nNumberOfProfiles - 1)))
+            {
+                logw("pParamProfileLevel->nProfileIndex[0x%x] error!", (unsigned int)pParamProfileLevel->nProfileIndex);
+                return OMX_ErrorBadParameter;
+            }
+
+            /* Point to table entry based on index */
+            pProfileLevel += pParamProfileLevel->nProfileIndex;
+
+            /* -1 indicates end of table */
+            if(pProfileLevel->nProfile != -1)
+            {
+                pParamProfileLevel->eProfile = pProfileLevel->nProfile;
+                pParamProfileLevel->eLevel = pProfileLevel->nLevel;
+                eError = OMX_ErrorNone;
+            }
+            else
+            {
+                logw("pProfileLevel->nProfile error!");
+                eError = OMX_ErrorNoMore;
+            }
+
+            break;
+        }
+        default:
+        {
+            if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoGetAndroidNativeBufferUsage)
+            {
+                logi(" COMPONENT_GET_PARAMETER: AWOMX_IndexParamVideoGetAndroidNativeBufferUsage");
+                break;
+            }
+            else
+            {
+                logi("get_parameter: unknown param %08x\n", paramIndex);
+                eError =OMX_ErrorUnsupportedIndex;
+                break;
+            }
+        }
     }
 
     return eError;
@@ -1107,415 +1110,415 @@ OMX_ERRORTYPE  omx_vdec::set_parameter(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_I
 
     if(paramData == NULL)
     {
-    	logi("Get Param in Invalid paramData \n");
-    	return OMX_ErrorBadParameter;
+        logi("Get Param in Invalid paramData \n");
+        return OMX_ErrorBadParameter;
     }
 
     switch(paramIndex)
     {
-	    case OMX_IndexParamPortDefinition:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamPortDefinition");
+        case OMX_IndexParamPortDefinition:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamPortDefinition");
             if (((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex == m_sInPortDef.nPortIndex)
             {
                 logi("set_OMX_IndexParamPortDefinition, m_sInPortDef.nPortIndex=%d", (int)m_sInPortDef.nPortIndex);
-	        	if(((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual != m_sInPortDef.nBufferCountActual)
-	        	{
-	        		int nBufCnt;
-	        		int nIndex;
+                if(((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual != m_sInPortDef.nBufferCountActual)
+                {
+                    int nBufCnt;
+                    int nIndex;
 
 
-	        		pthread_mutex_lock(&m_inBufMutex);
+                    pthread_mutex_lock(&m_inBufMutex);
 
-	        		if(m_sInBufList.pBufArr != NULL)
-	        			free(m_sInBufList.pBufArr);
+                    if(m_sInBufList.pBufArr != NULL)
+                        free(m_sInBufList.pBufArr);
 
-	        		if(m_sInBufList.pBufHdrList != NULL)
-	        			free(m_sInBufList.pBufHdrList);
+                    if(m_sInBufList.pBufHdrList != NULL)
+                        free(m_sInBufList.pBufHdrList);
 
-	        		nBufCnt = ((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual;
-	        		logi("x allocate %d buffers.", nBufCnt);
+                    nBufCnt = ((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual;
+                    logi("x allocate %d buffers.", nBufCnt);
 
-	        	    m_sInBufList.pBufArr = (OMX_BUFFERHEADERTYPE*)malloc(sizeof(OMX_BUFFERHEADERTYPE)* nBufCnt);
-	        	    m_sInBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**)malloc(sizeof(OMX_BUFFERHEADERTYPE*)* nBufCnt);
-	        	    for (nIndex = 0; nIndex < nBufCnt; nIndex++)
-	        	    {
-	        	        OMX_CONF_INIT_STRUCT_PTR (&m_sInBufList.pBufArr[nIndex], OMX_BUFFERHEADERTYPE);
-	        	    }
+                    m_sInBufList.pBufArr = (OMX_BUFFERHEADERTYPE*)malloc(sizeof(OMX_BUFFERHEADERTYPE)* nBufCnt);
+                    m_sInBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**)malloc(sizeof(OMX_BUFFERHEADERTYPE*)* nBufCnt);
+                    for (nIndex = 0; nIndex < nBufCnt; nIndex++)
+                    {
+                        OMX_CONF_INIT_STRUCT_PTR (&m_sInBufList.pBufArr[nIndex], OMX_BUFFERHEADERTYPE);
+                    }
 
-	        	    m_sInBufList.nSizeOfList       = 0;
-	        	    m_sInBufList.nAllocSize        = 0;
-	        	    m_sInBufList.nWritePos         = 0;
-	        	    m_sInBufList.nReadPos          = 0;
-	        	    m_sInBufList.nAllocBySelfFlags = 0;
-	        	    m_sInBufList.nSizeOfList       = 0;
-	        	    m_sInBufList.nBufArrSize       = nBufCnt;
-	        	    m_sInBufList.eDir              = OMX_DirInput;
+                    m_sInBufList.nSizeOfList       = 0;
+                    m_sInBufList.nAllocSize        = 0;
+                    m_sInBufList.nWritePos         = 0;
+                    m_sInBufList.nReadPos          = 0;
+                    m_sInBufList.nAllocBySelfFlags = 0;
+                    m_sInBufList.nSizeOfList       = 0;
+                    m_sInBufList.nBufArrSize       = nBufCnt;
+                    m_sInBufList.eDir              = OMX_DirInput;
 
-	        		pthread_mutex_unlock(&m_inBufMutex);
-	        	}
+                    pthread_mutex_unlock(&m_inBufMutex);
+                }
 
-	            memcpy(&m_sInPortDef, paramData, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
+                memcpy(&m_sInPortDef, paramData, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
 
                 m_streamInfo.nWidth  = m_sInPortDef.format.video.nFrameWidth;
                 m_streamInfo.nHeight = m_sInPortDef.format.video.nFrameHeight;
             }
-	        else if (((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex == m_sOutPortDef.nPortIndex)
-	        {
+            else if (((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex == m_sOutPortDef.nPortIndex)
+            {
                 logi("set_OMX_IndexParamPortDefinition, m_sOutPortDef.nPortIndex=%d", (int)m_sOutPortDef.nPortIndex);
-	        	if(((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual != m_sOutPortDef.nBufferCountActual)
-	        	{
-	        		int nBufCnt;
-	        		int nIndex;
+                if(((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual != m_sOutPortDef.nBufferCountActual)
+                {
+                    int nBufCnt;
+                    int nIndex;
 
-	        		pthread_mutex_lock(&m_outBufMutex);
+                    pthread_mutex_lock(&m_outBufMutex);
 
-	        		if(m_sOutBufList.pBufArr != NULL)
-	        			free(m_sOutBufList.pBufArr);
+                    if(m_sOutBufList.pBufArr != NULL)
+                        free(m_sOutBufList.pBufArr);
 
-	        		if(m_sOutBufList.pBufHdrList != NULL)
-	        			free(m_sOutBufList.pBufHdrList);
+                    if(m_sOutBufList.pBufHdrList != NULL)
+                        free(m_sOutBufList.pBufHdrList);
 
-	        		nBufCnt = ((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual;
-	        		logi("x allocate %d buffers.", nBufCnt);
+                    nBufCnt = ((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nBufferCountActual;
+                    logi("x allocate %d buffers.", nBufCnt);
 
                     //*Initialize the output buffer list
-	        	    m_sOutBufList.pBufArr = (OMX_BUFFERHEADERTYPE*) malloc(sizeof(OMX_BUFFERHEADERTYPE) * nBufCnt);
-	        	    m_sOutBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**) malloc(sizeof(OMX_BUFFERHEADERTYPE*) * nBufCnt);
-	        	    for (nIndex = 0; nIndex < nBufCnt; nIndex++)
-	        	    {
-	        	        OMX_CONF_INIT_STRUCT_PTR (&m_sOutBufList.pBufArr[nIndex], OMX_BUFFERHEADERTYPE);
-	        	    }
+                    m_sOutBufList.pBufArr = (OMX_BUFFERHEADERTYPE*) malloc(sizeof(OMX_BUFFERHEADERTYPE) * nBufCnt);
+                    m_sOutBufList.pBufHdrList = (OMX_BUFFERHEADERTYPE**) malloc(sizeof(OMX_BUFFERHEADERTYPE*) * nBufCnt);
+                    for (nIndex = 0; nIndex < nBufCnt; nIndex++)
+                    {
+                        OMX_CONF_INIT_STRUCT_PTR (&m_sOutBufList.pBufArr[nIndex], OMX_BUFFERHEADERTYPE);
+                    }
 
-	        	    m_sOutBufList.nSizeOfList       = 0;
-	        	    m_sOutBufList.nAllocSize        = 0;
-	        	    m_sOutBufList.nWritePos         = 0;
-	        	    m_sOutBufList.nReadPos          = 0;
-	        	    m_sOutBufList.nAllocBySelfFlags = 0;
-	        	    m_sOutBufList.nSizeOfList       = 0;
-	        	    m_sOutBufList.nBufArrSize       = nBufCnt;
-	        	    m_sOutBufList.eDir              = OMX_DirOutput;
+                    m_sOutBufList.nSizeOfList       = 0;
+                    m_sOutBufList.nAllocSize        = 0;
+                    m_sOutBufList.nWritePos         = 0;
+                    m_sOutBufList.nReadPos          = 0;
+                    m_sOutBufList.nAllocBySelfFlags = 0;
+                    m_sOutBufList.nSizeOfList       = 0;
+                    m_sOutBufList.nBufArrSize       = nBufCnt;
+                    m_sOutBufList.eDir              = OMX_DirOutput;
 
-	        		pthread_mutex_unlock(&m_outBufMutex);
-	        	}
-                
+                    pthread_mutex_unlock(&m_outBufMutex);
+                }
+
                 OMX_BOOL bTmpPopulate = m_sOutPortDef.bPopulated;
                 OMX_BOOL bTmpEnabled  = m_sOutPortDef.bEnabled;
                 //logd("********* 0  m_sOutPortDef.format.video.eColorFormat=%d,m_sOutPortFormat.eColorFormat=%d",  m_sOutPortDef.format.video.eColorFormat, m_sOutPortFormat.eColorFormat);
-	            memcpy(&m_sOutPortDef, paramData, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
+                memcpy(&m_sOutPortDef, paramData, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
                 //logd("********* 1  m_sOutPortDef.format.video.eColorFormat=%d,m_sOutPortFormat.eColorFormat =%d",  m_sOutPortDef.format.video.eColorFormat, m_sOutPortFormat.eColorFormat );
                 m_sOutPortDef.bPopulated = bTmpPopulate;
                 m_sOutPortDef.bEnabled   = bTmpEnabled;
-                
-                
+
+
                 //check some key parameter
                 if(m_sOutPortDef.format.video.nFrameWidth * m_sOutPortDef.format.video.nFrameHeight * 3 / 2 != m_sOutPortDef.nBufferSize)
                 {
-					logw("set_parameter, OMX_IndexParamPortDefinition, OutPortDef : change nBufferSize[%d] to [%d] to suit frame width[%d] and height[%d]",
-                        (int)m_sOutPortDef.nBufferSize, 
-                        (int)(m_sOutPortDef.format.video.nFrameWidth * m_sOutPortDef.format.video.nFrameHeight * 3 / 2), 
-                        (int)m_sOutPortDef.format.video.nFrameWidth, 
+                    logw("set_parameter, OMX_IndexParamPortDefinition, OutPortDef : change nBufferSize[%d] to [%d] to suit frame width[%d] and height[%d]",
+                        (int)m_sOutPortDef.nBufferSize,
+                        (int)(m_sOutPortDef.format.video.nFrameWidth * m_sOutPortDef.format.video.nFrameHeight * 3 / 2),
+                        (int)m_sOutPortDef.format.video.nFrameWidth,
                         (int)m_sOutPortDef.format.video.nFrameHeight);
                     m_sOutPortDef.nBufferSize = m_sOutPortDef.format.video.nFrameWidth * m_sOutPortDef.format.video.nFrameHeight * 3 / 2;
                 }
 
-                logi("(omx_vdec, f:%s, l:%d) OMX_IndexParamPortDefinition, width = %d, height = %d, nPortIndex[%d], nBufferCountActual[%d], nBufferCountMin[%d], nBufferSize[%d]", __FUNCTION__, __LINE__, 
+                logi("(omx_vdec, f:%s, l:%d) OMX_IndexParamPortDefinition, width = %d, height = %d, nPortIndex[%d], nBufferCountActual[%d], nBufferCountMin[%d], nBufferSize[%d]", __FUNCTION__, __LINE__,
                     (int)m_sOutPortDef.format.video.nFrameWidth, (int)m_sOutPortDef.format.video.nFrameHeight,
                     (int)m_sOutPortDef.nPortIndex, (int)m_sOutPortDef.nBufferCountActual, (int)m_sOutPortDef.nBufferCountMin, (int)m_sOutPortDef.nBufferSize);
-	        }
-	        else
-	        {
+            }
+            else
+            {
                 logw("set_OMX_IndexParamPortDefinition, error, paramPortIndex=%d", (int)((OMX_PARAM_PORTDEFINITIONTYPE *)(paramData))->nPortIndex);
-	            eError = OMX_ErrorBadPortIndex;
-	        }
+                eError = OMX_ErrorBadPortIndex;
+            }
 
-	       break;
-	    }
+           break;
+        }
 
-	    case OMX_IndexParamVideoPortFormat:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoPortFormat");
+        case OMX_IndexParamVideoPortFormat:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoPortFormat");
 
-	        if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nPortIndex == m_sInPortFormat.nPortIndex)
-	        {
-	            if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nIndex > m_sInPortFormat.nIndex)
-		            eError = OMX_ErrorNoMore;
-		        else
-		            memcpy(&m_sInPortFormat, paramData, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
-	        }
-	        else if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nPortIndex == m_sOutPortFormat.nPortIndex)
-	        {
-	            if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sOutPortFormat.nIndex)
-		            eError = OMX_ErrorNoMore;
-		        else
-		            memcpy(&m_sOutPortFormat, paramData, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
-	        }
-	        else
-	            eError = OMX_ErrorBadPortIndex;
-	        break;
-	    }
+            if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nPortIndex == m_sInPortFormat.nPortIndex)
+            {
+                if (((OMX_VIDEO_PARAM_PORTFORMATTYPE *)(paramData))->nIndex > m_sInPortFormat.nIndex)
+                    eError = OMX_ErrorNoMore;
+                else
+                    memcpy(&m_sInPortFormat, paramData, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
+            }
+            else if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nPortIndex == m_sOutPortFormat.nPortIndex)
+            {
+                if (((OMX_VIDEO_PARAM_PORTFORMATTYPE*)(paramData))->nIndex > m_sOutPortFormat.nIndex)
+                    eError = OMX_ErrorNoMore;
+                else
+                    memcpy(&m_sOutPortFormat, paramData, sizeof(OMX_VIDEO_PARAM_PORTFORMATTYPE));
+            }
+            else
+                eError = OMX_ErrorBadPortIndex;
+            break;
+        }
 
-	    case OMX_IndexParamStandardComponentRole:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamStandardComponentRole");
-    		OMX_PARAM_COMPONENTROLETYPE *comp_role;
-    		comp_role = (OMX_PARAM_COMPONENTROLETYPE *) paramData;
-    		logi("set_parameter: OMX_IndexParamStandardComponentRole %s\n", comp_role->cRole);
+        case OMX_IndexParamStandardComponentRole:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamStandardComponentRole");
+            OMX_PARAM_COMPONENTROLETYPE *comp_role;
+            comp_role = (OMX_PARAM_COMPONENTROLETYPE *) paramData;
+            logi("set_parameter: OMX_IndexParamStandardComponentRole %s\n", comp_role->cRole);
 
-    		if((m_state == OMX_StateLoaded)/* && !BITMASK_PRESENT(&m_flags,OMX_COMPONENT_IDLE_PENDING)*/)
-    		{
-    			logi("Set Parameter called in valid state");
-    		}
-    		else
-    		{
-    			logi("Set Parameter called in Invalid State\n");
-    			return OMX_ErrorIncorrectStateOperation;
-    		}
+            if((m_state == OMX_StateLoaded)/* && !BITMASK_PRESENT(&m_flags,OMX_COMPONENT_IDLE_PENDING)*/)
+            {
+                logi("Set Parameter called in valid state");
+            }
+            else
+            {
+                logi("Set Parameter called in Invalid State\n");
+                return OMX_ErrorIncorrectStateOperation;
+            }
 
             if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mjpeg", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.mjpeg",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.mjpeg",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.mjpeg",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.mjpeg",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
-    		else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.mpeg4",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.mpeg4",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError = OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
+            else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.mpeg4",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.mpeg4",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError = OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.msmpeg4v1", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.msmpeg4v1",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.msmpeg4v1",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError = OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.msmpeg4v1",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.msmpeg4v1",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError = OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.msmpeg4v2", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.msmpeg4v2",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.msmpeg4v2",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError = OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.msmpeg4v2",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.msmpeg4v2",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError = OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.divx", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.divx",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.divx",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError = OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.divx",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.divx",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError = OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.xvid", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.xvid",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.xvid",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError = OMX_ErrorUnsupportedSetting;
-    			}
-    		}
-    		else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.h263", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.h263", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.xvid",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.xvid",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError = OMX_ErrorUnsupportedSetting;
+                }
+            }
+            else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.h263", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.h263", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.s263", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.s263", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.s263", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.s263", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.s263", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.rxg2", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.rxg2", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.rxg2", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.rxg2", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.rxg2", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.wmv1", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.wmv1",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.wmv1",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.wmv1",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.wmv1",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.wmv2", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.wmv2",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.wmv2",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.wmv2",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.wmv2",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vc1", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vp6", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.vp6", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.vp6", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.vp6", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.vp6", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vp8", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.vp8", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vp9", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.vp9", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.vp9", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.vp9", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.vp9", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.avc", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((char*)comp_role->cRole, "video_decoder.avc", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.avc", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-                  	logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-                  	eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
+            {
+                if(!strncmp((char*)comp_role->cRole, "video_decoder.avc", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.avc", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                      logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                      eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
             else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.hevc", OMX_MAX_STRINGNAME_SIZE))
-    		{
-    			if(!strncmp((const char*)comp_role->cRole,"video_decoder.hevc", OMX_MAX_STRINGNAME_SIZE))
-    			{
-    				strncpy((char*)m_cRole,"video_decoder.hevc", OMX_MAX_STRINGNAME_SIZE);
-    			}
-    			else
-    			{
-    				logi("Setparameter: unknown Index %s\n", comp_role->cRole);
-    				eError =OMX_ErrorUnsupportedSetting;
-    			}
-    		}
-    		else
-    		{
-    			logi("Setparameter: unknown param %s\n", m_cName);
-    			eError = OMX_ErrorInvalidComponentName;
-    		}
+            {
+                if(!strncmp((const char*)comp_role->cRole,"video_decoder.hevc", OMX_MAX_STRINGNAME_SIZE))
+                {
+                    strncpy((char*)m_cRole,"video_decoder.hevc", OMX_MAX_STRINGNAME_SIZE);
+                }
+                else
+                {
+                    logi("Setparameter: unknown Index %s\n", comp_role->cRole);
+                    eError =OMX_ErrorUnsupportedSetting;
+                }
+            }
+            else
+            {
+                logi("Setparameter: unknown param %s\n", m_cName);
+                eError = OMX_ErrorInvalidComponentName;
+            }
 
-    		break;
-	    }
+            break;
+        }
 
-	    case OMX_IndexParamPriorityMgmt:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamPriorityMgmt");
+        case OMX_IndexParamPriorityMgmt:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamPriorityMgmt");
             if(m_state != OMX_StateLoaded)
             {
-            	logi("Set Parameter called in Invalid State\n");
-            	return OMX_ErrorIncorrectStateOperation;
+                logi("Set Parameter called in Invalid State\n");
+                return OMX_ErrorIncorrectStateOperation;
             }
 
             OMX_PRIORITYMGMTTYPE *priorityMgmtype = (OMX_PRIORITYMGMTTYPE*) paramData;
@@ -1524,68 +1527,68 @@ OMX_ERRORTYPE  omx_vdec::set_parameter(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_I
             m_sPriorityMgmt.nGroupPriority = priorityMgmtype->nGroupPriority;
 
             break;
-	    }
+        }
 
-	    case OMX_IndexParamCompBufferSupplier:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamCompBufferSupplier");
-    		OMX_PARAM_BUFFERSUPPLIERTYPE *bufferSupplierType = (OMX_PARAM_BUFFERSUPPLIERTYPE*) paramData;
+        case OMX_IndexParamCompBufferSupplier:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamCompBufferSupplier");
+            OMX_PARAM_BUFFERSUPPLIERTYPE *bufferSupplierType = (OMX_PARAM_BUFFERSUPPLIERTYPE*) paramData;
 
             logi("set_parameter: OMX_IndexParamCompBufferSupplier %d\n", bufferSupplierType->eBufferSupplier);
             if(bufferSupplierType->nPortIndex == 0)
-            	m_sInBufSupplier.eBufferSupplier = bufferSupplierType->eBufferSupplier;
+                m_sInBufSupplier.eBufferSupplier = bufferSupplierType->eBufferSupplier;
             else if(bufferSupplierType->nPortIndex == 1)
-            	m_sOutBufSupplier.eBufferSupplier = bufferSupplierType->eBufferSupplier;
-        	else
-        		eError = OMX_ErrorBadPortIndex;
+                m_sOutBufSupplier.eBufferSupplier = bufferSupplierType->eBufferSupplier;
+            else
+                eError = OMX_ErrorBadPortIndex;
 
-        	break;
-	    }
+            break;
+        }
 
-	    case OMX_IndexParamVideoAvc:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoAvc");
-      		logi("set_parameter: OMX_IndexParamVideoAvc, do nothing.\n");
-	    	break;
-	    }
+        case OMX_IndexParamVideoAvc:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoAvc");
+              logi("set_parameter: OMX_IndexParamVideoAvc, do nothing.\n");
+            break;
+        }
 
-	    case OMX_IndexParamVideoH263:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoH263");
-     		logi("set_parameter: OMX_IndexParamVideoH263, do nothing.\n");
-	    	break;
-	    }
+        case OMX_IndexParamVideoH263:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoH263");
+             logi("set_parameter: OMX_IndexParamVideoH263, do nothing.\n");
+            break;
+        }
 
-	    case OMX_IndexParamVideoMpeg4:
-	    {
-	    	logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoMpeg4");
-     		logi("set_parameter: OMX_IndexParamVideoMpeg4, do nothing.\n");
-	    	break;
-	    }
+        case OMX_IndexParamVideoMpeg4:
+        {
+            logi(" COMPONENT_SET_PARAMETER: OMX_IndexParamVideoMpeg4");
+             logi("set_parameter: OMX_IndexParamVideoMpeg4, do nothing.\n");
+            break;
+        }
 
-	    default:
-	    {
-#if CONFIG_OS == OPTION_OS_ANDROID            
-	    	if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoUseAndroidNativeBuffer2)
-	    	{
-		    	logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoUseAndroidNativeBuffer2");
-	     		logi("set_parameter: AWOMX_IndexParamVideoUseAndroidNativeBuffer2, do nothing.\n");
-	     		m_useAndroidBuffer = OMX_TRUE;
-		    	break;
-	    	}
-	    	else if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoEnableAndroidNativeBuffers)
-	    	{
-		    	logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoEnableAndroidNativeBuffers");
-	     		logi("set_parameter: AWOMX_IndexParamVideoEnableAndroidNativeBuffers, set m_useAndroidBuffer to OMX_TRUE\n");
+        default:
+        {
+#if CONFIG_OS == OPTION_OS_ANDROID
+            if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoUseAndroidNativeBuffer2)
+            {
+                logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoUseAndroidNativeBuffer2");
+                 logi("set_parameter: AWOMX_IndexParamVideoUseAndroidNativeBuffer2, do nothing.\n");
+                 m_useAndroidBuffer = OMX_TRUE;
+                break;
+            }
+            else if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex == AWOMX_IndexParamVideoEnableAndroidNativeBuffers)
+            {
+                logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoEnableAndroidNativeBuffers");
+                 logi("set_parameter: AWOMX_IndexParamVideoEnableAndroidNativeBuffers, set m_useAndroidBuffer to OMX_TRUE\n");
 
                 EnableAndroidNativeBuffersParams *EnableAndroidBufferParams =  (EnableAndroidNativeBuffersParams*) paramData;
                 logi(" enbleParam = %d\n",EnableAndroidBufferParams->enable);
                 if(1==EnableAndroidBufferParams->enable)
                 {
                     m_useAndroidBuffer = OMX_TRUE;
-                }         
-		    	break;
-	    	}
+                }
+                break;
+            }
             else if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex==AWOMX_IndexParamVideoUseStoreMetaDataInBuffer)
             {
                 logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoUseStoreMetaDataInBuffer");
@@ -1602,7 +1605,7 @@ OMX_ERRORTYPE  omx_vdec::set_parameter(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_I
                     m_storeOutputMetaDataFlag = OMX_TRUE;
                 }
             }
-            #if(CONFIG_OS_VERSION >= OPTION_OS_VERSION_ANDROID_4_4)  
+            #if(CONFIG_OS_VERSION >= OPTION_OS_VERSION_ANDROID_4_4)
             else if((AW_VIDEO_EXTENSIONS_INDEXTYPE)paramIndex==AWOMX_IndexParamVideoUsePrepareForAdaptivePlayback)
             {
                 logi(" COMPONENT_SET_PARAMETER: AWOMX_IndexParamVideoUsePrepareForAdaptivePlayback");
@@ -1615,24 +1618,24 @@ OMX_ERRORTYPE  omx_vdec::set_parameter(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_I
                     logi("set adaptive playback ,maxWidth = %d, maxHeight = %d",
                            (int)pPlaybackParams->nMaxFrameWidth,
                            (int)pPlaybackParams->nMaxFrameHeight);
-                    
+
                     m_maxWidth  = pPlaybackParams->nMaxFrameWidth;
                     m_maxHeight = pPlaybackParams->nMaxFrameHeight;
                 }
             }
-            #endif            
-	    	else
-	    	{
-	    		logi("Setparameter: unknown param %d\n", paramIndex);
-	    		eError = OMX_ErrorUnsupportedIndex;
-	    		break;
-	    	}
+            #endif
+            else
+            {
+                logi("Setparameter: unknown param %d\n", paramIndex);
+                eError = OMX_ErrorUnsupportedIndex;
+                break;
+            }
 #else
             logi("Setparameter: unknown param %d\n", paramIndex);
-    		eError = OMX_ErrorUnsupportedIndex;
-    		break;
+            eError = OMX_ErrorUnsupportedIndex;
+            break;
 #endif
-	    }
+        }
     }
 
     return eError;
@@ -1640,17 +1643,17 @@ OMX_ERRORTYPE  omx_vdec::set_parameter(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_I
 
 OMX_ERRORTYPE  omx_vdec::get_config(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_INDEXTYPE configIndex, OMX_INOUT OMX_PTR configData)
 {
-	OMX_ERRORTYPE eError = OMX_ErrorNone;
+    OMX_ERRORTYPE eError = OMX_ErrorNone;
 
     logi("(f:%s, l:%d) index = %d", __FUNCTION__, __LINE__, configIndex);
-	if (m_state == OMX_StateInvalid)
-	{
-		logi("get_config in Invalid State\n");
-		return OMX_ErrorInvalidState;
-	}
+    if (m_state == OMX_StateInvalid)
+    {
+        logi("get_config in Invalid State\n");
+        return OMX_ErrorInvalidState;
+    }
 
-	switch (configIndex)
-	{
+    switch (configIndex)
+    {
         case OMX_IndexConfigCommonOutputCrop:
         {
             OMX_CONFIG_RECTTYPE *pRect = (OMX_CONFIG_RECTTYPE *)configData;
@@ -1661,11 +1664,11 @@ OMX_ERRORTYPE  omx_vdec::get_config(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_INDE
             mVideoRect.nTop = 0;
             mVideoRect.nHeight = m_sOutPortDef.format.video.nFrameHeight;
             mVideoRect.nWidth = m_sOutPortDef.format.video.nFrameWidth;
-            
+
             logi("+++++ get display crop: top[%d],left[%d],width[%d],height[%d]",
                   (int)mVideoRect.nTop,(int)mVideoRect.nLeft,
                   (int)mVideoRect.nWidth,(int)mVideoRect.nHeight);
-            
+
             if(mVideoRect.nHeight != 0)
             {
                 memcpy(pRect,&mVideoRect,sizeof(OMX_CONFIG_RECTTYPE));
@@ -1677,61 +1680,61 @@ OMX_ERRORTYPE  omx_vdec::get_config(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_INDE
             }
             break;
         }
-    	default:
-    	{
-    		logi("get_config: unknown param %d\n",configIndex);
-    		eError = OMX_ErrorUnsupportedIndex;
-    	}
-	}
+        default:
+        {
+            logi("get_config: unknown param %d\n",configIndex);
+            eError = OMX_ErrorUnsupportedIndex;
+        }
+    }
 
-	return eError;
+    return eError;
 }
 
 OMX_ERRORTYPE omx_vdec::set_config(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_INDEXTYPE configIndex, OMX_IN OMX_PTR configData)
 {
 
-	logi("(f:%s, l:%d) index = %d", __FUNCTION__, __LINE__, configIndex);
+    logi("(f:%s, l:%d) index = %d", __FUNCTION__, __LINE__, configIndex);
 
-	if(m_state == OMX_StateInvalid)
-	{
-		logi("set_config in Invalid State\n");
-		return OMX_ErrorInvalidState;
-	}
+    if(m_state == OMX_StateInvalid)
+    {
+        logi("set_config in Invalid State\n");
+        return OMX_ErrorInvalidState;
+    }
 
-	OMX_ERRORTYPE eError = OMX_ErrorNone;
+    OMX_ERRORTYPE eError = OMX_ErrorNone;
 
-	if (m_state == OMX_StateExecuting)
-	{
-		logi("set_config: Ignore in Executing state\n");
-		return eError;
-	}
+    if (m_state == OMX_StateExecuting)
+    {
+        logi("set_config: Ignore in Executing state\n");
+        return eError;
+    }
 
-	switch(configIndex)
-	{
-		default:
-		{
-			eError = OMX_ErrorUnsupportedIndex;
-		}
-	}
+    switch(configIndex)
+    {
+        default:
+        {
+            eError = OMX_ErrorUnsupportedIndex;
+        }
+    }
 
-	return eError;
+    return eError;
 }
 
 
 OMX_ERRORTYPE  omx_vdec::get_extension_index(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_STRING paramName, OMX_OUT OMX_INDEXTYPE* indexType)
 {
-	unsigned int  nIndex;
+    unsigned int  nIndex;
     OMX_ERRORTYPE eError = OMX_ErrorUndefined;
 
     logi("(f:%s, l:%d) param name = %s", __FUNCTION__, __LINE__, paramName);
     if(m_state == OMX_StateInvalid)
     {
-    	logi("Get Extension Index in Invalid State\n");
+        logi("Get Extension Index in Invalid State\n");
         return OMX_ErrorInvalidState;
     }
 
     if(hComp == NULL)
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
 
     for(nIndex = 0; nIndex < sizeof(sVideoDecCustomParams)/sizeof(VIDDEC_CUSTOM_PARAM); nIndex++)
     {
@@ -1750,14 +1753,14 @@ OMX_ERRORTYPE  omx_vdec::get_extension_index(OMX_IN OMX_HANDLETYPE hComp, OMX_IN
 
 OMX_ERRORTYPE omx_vdec::get_state(OMX_IN OMX_HANDLETYPE hComp, OMX_OUT OMX_STATETYPE* state)
 {
-	logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
+    logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
 
-	if(hComp == NULL || state == NULL)
-		return OMX_ErrorBadParameter;
+    if(hComp == NULL || state == NULL)
+        return OMX_ErrorBadParameter;
 
-	*state = m_state;
+    *state = m_state;
     logi("COMPONENT_GET_STATE, state[0x%x]", m_state);
-	return OMX_ErrorNone;
+    return OMX_ErrorNone;
 }
 
 
@@ -1767,45 +1770,45 @@ OMX_ERRORTYPE omx_vdec::component_tunnel_request(OMX_IN    OMX_HANDLETYPE       
                                                  OMX_IN    OMX_U32              peerPort,
                                                  OMX_INOUT OMX_TUNNELSETUPTYPE* tunnelSetup)
 {
-	logi(" COMPONENT_TUNNEL_REQUEST");
+    logi(" COMPONENT_TUNNEL_REQUEST");
 
-	logw("Error: component_tunnel_request Not Implemented\n");
-	return OMX_ErrorNotImplemented;
+    logw("Error: component_tunnel_request Not Implemented\n");
+    return OMX_ErrorNotImplemented;
 }
 
 
 
 OMX_ERRORTYPE  omx_vdec::use_buffer(OMX_IN    OMX_HANDLETYPE          hComponent,
-                  			        OMX_INOUT OMX_BUFFERHEADERTYPE**  ppBufferHdr,
-                  			        OMX_IN    OMX_U32                 nPortIndex,
-                  			        OMX_IN    OMX_PTR                 pAppPrivate,
-                  			        OMX_IN    OMX_U32                 nSizeBytes,
-                  			        OMX_IN    OMX_U8*                 pBuffer)
+                                      OMX_INOUT OMX_BUFFERHEADERTYPE**  ppBufferHdr,
+                                      OMX_IN    OMX_U32                 nPortIndex,
+                                      OMX_IN    OMX_PTR                 pAppPrivate,
+                                      OMX_IN    OMX_U32                 nSizeBytes,
+                                      OMX_IN    OMX_U8*                 pBuffer)
 {
     OMX_PARAM_PORTDEFINITIONTYPE*   pPortDef;
     OMX_U32                         nIndex = 0x0;
 
     logi("(f:%s, l:%d) PortIndex[%d], nSizeBytes[%d], pBuffer[%p]", __FUNCTION__, __LINE__, (int)nPortIndex, (int)nSizeBytes, pBuffer);
-	if(hComponent == NULL || ppBufferHdr == NULL || pBuffer == NULL)
-	{
-		return OMX_ErrorBadParameter;
-	}
+    if(hComponent == NULL || ppBufferHdr == NULL || pBuffer == NULL)
+    {
+        return OMX_ErrorBadParameter;
+    }
 
     if (nPortIndex == m_sInPortDef.nPortIndex)
         pPortDef = &m_sInPortDef;
     else if (nPortIndex == m_sOutPortDef.nPortIndex)
         pPortDef = &m_sOutPortDef;
     else
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
 
     if (m_state!=OMX_StateLoaded && m_state!=OMX_StateWaitForResources && pPortDef->bEnabled!=OMX_FALSE)
     {
         logw("pPortDef[%d]->bEnabled=%d, m_state=0x%x, Can't use_buffer!", (int)nPortIndex, pPortDef->bEnabled, m_state);
-    	return OMX_ErrorIncorrectStateOperation;
+        return OMX_ErrorIncorrectStateOperation;
     }
     logi("pPortDef[%d]->bEnabled=%d, m_state=0x%x, can use_buffer.", (int)nPortIndex, pPortDef->bEnabled, m_state);
-    
-    
+
+
 
     if(pPortDef->bPopulated)
         return OMX_ErrorBadParameter;
@@ -1816,34 +1819,34 @@ OMX_ERRORTYPE  omx_vdec::use_buffer(OMX_IN    OMX_HANDLETYPE          hComponent
     if (nPortIndex == m_sInPortDef.nPortIndex)
     {
         if (nSizeBytes != pPortDef->nBufferSize)
-          	return OMX_ErrorBadParameter;
-    
-        logi("use_buffer, m_sInPortDef.nPortIndex=[%d]", (int)m_sInPortDef.nPortIndex);
-    	pthread_mutex_lock(&m_inBufMutex);
+              return OMX_ErrorBadParameter;
 
-    	if((OMX_S32)m_sInBufList.nAllocSize >= m_sInBufList.nBufArrSize)
+        logi("use_buffer, m_sInPortDef.nPortIndex=[%d]", (int)m_sInPortDef.nPortIndex);
+        pthread_mutex_lock(&m_inBufMutex);
+
+        if((OMX_S32)m_sInBufList.nAllocSize >= m_sInBufList.nBufArrSize)
         {
-        	pthread_mutex_unlock(&m_inBufMutex);
-        	return OMX_ErrorInsufficientResources;
+            pthread_mutex_unlock(&m_inBufMutex);
+            return OMX_ErrorInsufficientResources;
         }
 
-    	nIndex = m_sInBufList.nAllocSize;
-    	m_sInBufList.nAllocSize++;
+        nIndex = m_sInBufList.nAllocSize;
+        m_sInBufList.nAllocSize++;
 
-    	m_sInBufList.pBufArr[nIndex].pBuffer          = pBuffer;
-    	m_sInBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
-    	m_sInBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
-    	m_sInBufList.pBufArr[nIndex].nInputPortIndex  = nPortIndex;
-    	m_sInBufList.pBufArr[nIndex].nOutputPortIndex = 0xFFFFFFFE;
+        m_sInBufList.pBufArr[nIndex].pBuffer          = pBuffer;
+        m_sInBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
+        m_sInBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
+        m_sInBufList.pBufArr[nIndex].nInputPortIndex  = nPortIndex;
+        m_sInBufList.pBufArr[nIndex].nOutputPortIndex = 0xFFFFFFFE;
         *ppBufferHdr = &m_sInBufList.pBufArr[nIndex];
         if (m_sInBufList.nAllocSize == pPortDef->nBufferCountActual)
-        	pPortDef->bPopulated = OMX_TRUE;
+            pPortDef->bPopulated = OMX_TRUE;
 
-    	pthread_mutex_unlock(&m_inBufMutex);
+        pthread_mutex_unlock(&m_inBufMutex);
     }
     else
     {
-#if(CONFIG_OS == OPTION_OS_ANDROID && CONFIG_OS_VERSION >= OPTION_OS_VERSION_ANDROID_4_4)       
+#if(CONFIG_OS == OPTION_OS_ANDROID && CONFIG_OS_VERSION >= OPTION_OS_VERSION_ANDROID_4_4)
         if(m_storeOutputMetaDataFlag==OMX_TRUE)
         {
             if(nSizeBytes != sizeof(VideoDecoderOutputMetaData))
@@ -1852,84 +1855,84 @@ OMX_ERRORTYPE  omx_vdec::use_buffer(OMX_IN    OMX_HANDLETYPE          hComponent
         else
         {
             if(nSizeBytes != pPortDef->nBufferSize)
-          	    return OMX_ErrorBadParameter;
+                  return OMX_ErrorBadParameter;
         }
 #else
         if(nSizeBytes != pPortDef->nBufferSize)
-          	    return OMX_ErrorBadParameter;
+                  return OMX_ErrorBadParameter;
 #endif
-        
-        logi("use_buffer, m_sOutPortDef.nPortIndex=[%d]", (int)m_sOutPortDef.nPortIndex);
-    	pthread_mutex_lock(&m_outBufMutex);
 
-    	if((OMX_S32)m_sOutBufList.nAllocSize >= m_sOutBufList.nBufArrSize)
+        logi("use_buffer, m_sOutPortDef.nPortIndex=[%d]", (int)m_sOutPortDef.nPortIndex);
+        pthread_mutex_lock(&m_outBufMutex);
+
+        if((OMX_S32)m_sOutBufList.nAllocSize >= m_sOutBufList.nBufArrSize)
         {
-        	pthread_mutex_unlock(&m_outBufMutex);
-        	return OMX_ErrorInsufficientResources;
+            pthread_mutex_unlock(&m_outBufMutex);
+            return OMX_ErrorInsufficientResources;
         }
         pPortDef->nBufferSize = nSizeBytes;
-    	nIndex = m_sOutBufList.nAllocSize;
-    	m_sOutBufList.nAllocSize++;
+        nIndex = m_sOutBufList.nAllocSize;
+        m_sOutBufList.nAllocSize++;
 
-    	m_sOutBufList.pBufArr[nIndex].pBuffer          = pBuffer;
-    	m_sOutBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
-    	m_sOutBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
-    	m_sOutBufList.pBufArr[nIndex].nInputPortIndex  = 0xFFFFFFFE;
-    	m_sOutBufList.pBufArr[nIndex].nOutputPortIndex = nPortIndex;
+        m_sOutBufList.pBufArr[nIndex].pBuffer          = pBuffer;
+        m_sOutBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
+        m_sOutBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
+        m_sOutBufList.pBufArr[nIndex].nInputPortIndex  = 0xFFFFFFFE;
+        m_sOutBufList.pBufArr[nIndex].nOutputPortIndex = nPortIndex;
         *ppBufferHdr = &m_sOutBufList.pBufArr[nIndex];
         if (m_sOutBufList.nAllocSize == pPortDef->nBufferCountActual)
-        	pPortDef->bPopulated = OMX_TRUE;
+            pPortDef->bPopulated = OMX_TRUE;
 
-    	pthread_mutex_unlock(&m_outBufMutex);
+        pthread_mutex_unlock(&m_outBufMutex);
     }
 
     return OMX_ErrorNone;
 }
 
 OMX_ERRORTYPE omx_vdec::allocate_buffer(OMX_IN    OMX_HANDLETYPE         hComponent,
-        								OMX_INOUT OMX_BUFFERHEADERTYPE** ppBufferHdr,
-        								OMX_IN    OMX_U32                nPortIndex,
-        								OMX_IN    OMX_PTR                pAppPrivate,
-        								OMX_IN    OMX_U32                nSizeBytes)
+                                        OMX_INOUT OMX_BUFFERHEADERTYPE** ppBufferHdr,
+                                        OMX_IN    OMX_U32                nPortIndex,
+                                        OMX_IN    OMX_PTR                pAppPrivate,
+                                        OMX_IN    OMX_U32                nSizeBytes)
 {
-	OMX_S8                        nIndex = 0x0;
-	OMX_PARAM_PORTDEFINITIONTYPE* pPortDef;
+    OMX_S8                        nIndex = 0x0;
+    OMX_PARAM_PORTDEFINITIONTYPE* pPortDef;
 
-	//logi(" COMPONENT_ALLOCATE_BUFFER");
+    //logi(" COMPONENT_ALLOCATE_BUFFER");
     logi("(f:%s, l:%d) nPortIndex[%d], nSizeBytes[%d]", __FUNCTION__, __LINE__, (int)nPortIndex, (int)nSizeBytes);
-	if(hComponent == NULL || ppBufferHdr == NULL)
-    {   
+    if(hComponent == NULL || ppBufferHdr == NULL)
+    {
         loge("hComponent=%p, ppBufferHdr=%p", hComponent, ppBufferHdr);
-		return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
     }
     if (nPortIndex == m_sInPortDef.nPortIndex)
         pPortDef = &m_sInPortDef;
     else
     {
         if (nPortIndex == m_sOutPortDef.nPortIndex)
-	        pPortDef = &m_sOutPortDef;
+            pPortDef = &m_sOutPortDef;
         else
         {
             loge("nPortIndex = %lu", nPortIndex);
-        	return OMX_ErrorBadParameter;
-        } 
+            return OMX_ErrorBadParameter;
+        }
     }
 
 //    if (!pPortDef->bEnabled)
-//    	return OMX_ErrorIncorrectStateOperation;
+//        return OMX_ErrorIncorrectStateOperation;
 
-    if (m_state!=OMX_StateLoaded && m_state!=OMX_StateWaitForResources && pPortDef->bEnabled!=OMX_FALSE) // 
+    if (m_state!=OMX_StateLoaded && m_state!=OMX_StateWaitForResources && pPortDef->bEnabled!=OMX_FALSE) //
     {
         logw("pPortDef[%d]->bEnabled=%d, m_state=0x%x, Can't allocate_buffer! pPortDef(%p)", (int)nPortIndex, pPortDef->bEnabled, m_state, pPortDef);
-    	return OMX_ErrorIncorrectStateOperation;
+        return OMX_ErrorIncorrectStateOperation;
     }
     logi("pPortDef[%d]->bEnabled=%d, m_state=0x%x, can allocate_buffer.", (int)nPortIndex, pPortDef->bEnabled, m_state);
 
-    //if (nSizeBytes != pPortDef->nBufferSize || pPortDef->bPopulated) 
-    if(pPortDef->bPopulated) //* 
+    //if (nSizeBytes != pPortDef->nBufferSize || pPortDef->bPopulated)
+    if(pPortDef->bPopulated) //*
     {
         loge("nSizeBytes=%lu, pPortDef->bPopulated=%d", nSizeBytes,  pPortDef->bPopulated);
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
     }
 
     // Find an empty position in the BufferList and allocate memory for the buffer header
@@ -1937,57 +1940,57 @@ OMX_ERRORTYPE omx_vdec::allocate_buffer(OMX_IN    OMX_HANDLETYPE         hCompon
     if (nPortIndex == m_sInPortDef.nPortIndex)
     {
         logi("allocate_buffer, m_sInPortDef.nPortIndex[%d]", (int)m_sInPortDef.nPortIndex);
-    	pthread_mutex_lock(&m_inBufMutex);
+        pthread_mutex_lock(&m_inBufMutex);
 
-    	if((OMX_S32)m_sInBufList.nAllocSize >= m_sInBufList.nBufArrSize)
+        if((OMX_S32)m_sInBufList.nAllocSize >= m_sInBufList.nBufArrSize)
         {
-        	pthread_mutex_unlock(&m_inBufMutex);
-        	return OMX_ErrorInsufficientResources;
+            pthread_mutex_unlock(&m_inBufMutex);
+            return OMX_ErrorInsufficientResources;
         }
 
-    	nIndex = m_sInBufList.nAllocSize;
+        nIndex = m_sInBufList.nAllocSize;
 
         m_sInBufList.pBufArr[nIndex].pBuffer = (OMX_U8*)malloc(nSizeBytes);
 
         if (!m_sInBufList.pBufArr[nIndex].pBuffer)
         {
-        	pthread_mutex_unlock(&m_inBufMutex);
+            pthread_mutex_unlock(&m_inBufMutex);
             return OMX_ErrorInsufficientResources;
         }
 
         m_sInBufList.nAllocBySelfFlags |= (1<<nIndex);
 
-    	m_sInBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
-    	m_sInBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
-    	m_sInBufList.pBufArr[nIndex].nInputPortIndex  = nPortIndex;
-    	m_sInBufList.pBufArr[nIndex].nOutputPortIndex = 0xFFFFFFFE;
+        m_sInBufList.pBufArr[nIndex].nAllocLen        = nSizeBytes;
+        m_sInBufList.pBufArr[nIndex].pAppPrivate      = pAppPrivate;
+        m_sInBufList.pBufArr[nIndex].nInputPortIndex  = nPortIndex;
+        m_sInBufList.pBufArr[nIndex].nOutputPortIndex = 0xFFFFFFFE;
         *ppBufferHdr = &m_sInBufList.pBufArr[nIndex];
 
         m_sInBufList.nAllocSize++;
-        
-        if (m_sInBufList.nAllocSize == pPortDef->nBufferCountActual)
-        	pPortDef->bPopulated = OMX_TRUE;
 
-    	pthread_mutex_unlock(&m_inBufMutex);
+        if (m_sInBufList.nAllocSize == pPortDef->nBufferCountActual)
+            pPortDef->bPopulated = OMX_TRUE;
+
+        pthread_mutex_unlock(&m_inBufMutex);
     }
     else
     {
         logi("allocate_buffer, m_sOutPortDef.nPortIndex[%d]", (int)m_sOutPortDef.nPortIndex);
-    	pthread_mutex_lock(&m_outBufMutex);
+        pthread_mutex_lock(&m_outBufMutex);
 
-    	if((OMX_S32)m_sOutBufList.nAllocSize >= m_sOutBufList.nBufArrSize)
+        if((OMX_S32)m_sOutBufList.nAllocSize >= m_sOutBufList.nBufArrSize)
         {
-        	pthread_mutex_unlock(&m_outBufMutex);
-        	return OMX_ErrorInsufficientResources;
+            pthread_mutex_unlock(&m_outBufMutex);
+            return OMX_ErrorInsufficientResources;
         }
 
-    	nIndex = m_sOutBufList.nAllocSize;
+        nIndex = m_sOutBufList.nAllocSize;
 
-    	m_sOutBufList.pBufArr[nIndex].pBuffer = (OMX_U8*)malloc(nSizeBytes);
+        m_sOutBufList.pBufArr[nIndex].pBuffer = (OMX_U8*)malloc(nSizeBytes);
 
         if (!m_sOutBufList.pBufArr[nIndex].pBuffer)
         {
-        	pthread_mutex_unlock(&m_outBufMutex);
+            pthread_mutex_unlock(&m_outBufMutex);
             return OMX_ErrorInsufficientResources;
         }
 
@@ -2000,26 +2003,26 @@ OMX_ERRORTYPE omx_vdec::allocate_buffer(OMX_IN    OMX_HANDLETYPE         hCompon
         *ppBufferHdr = &m_sOutBufList.pBufArr[nIndex];
 
         m_sOutBufList.nAllocSize++;
-        
-        if (m_sOutBufList.nAllocSize == pPortDef->nBufferCountActual)
-        	pPortDef->bPopulated = OMX_TRUE;
 
-    	pthread_mutex_unlock(&m_outBufMutex);
+        if (m_sOutBufList.nAllocSize == pPortDef->nBufferCountActual)
+            pPortDef->bPopulated = OMX_TRUE;
+
+        pthread_mutex_unlock(&m_outBufMutex);
     }
 
     return OMX_ErrorNone;
 }
 
 OMX_ERRORTYPE omx_vdec::free_buffer(OMX_IN  OMX_HANDLETYPE        hComponent,
-        							OMX_IN  OMX_U32               nPortIndex,
-        							OMX_IN  OMX_BUFFERHEADERTYPE* pBufferHdr)
+                                    OMX_IN  OMX_U32               nPortIndex,
+                                    OMX_IN  OMX_BUFFERHEADERTYPE* pBufferHdr)
 {
     OMX_PARAM_PORTDEFINITIONTYPE* pPortDef;
     OMX_S32                       nIndex;
 
-	logi("(f:%s, l:%d) nPortIndex = %d, pBufferHdr = %p, m_state=0x%x", __FUNCTION__, __LINE__, (int)nPortIndex, pBufferHdr, m_state);
+    logi("(f:%s, l:%d) nPortIndex = %d, pBufferHdr = %p, m_state=0x%x", __FUNCTION__, __LINE__, (int)nPortIndex, pBufferHdr, m_state);
     if(hComponent == NULL || pBufferHdr == NULL)
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
 
     // Match the pBufferHdr to the appropriate entry in the BufferList
     // and free the allocated memory
@@ -2027,73 +2030,73 @@ OMX_ERRORTYPE omx_vdec::free_buffer(OMX_IN  OMX_HANDLETYPE        hComponent,
     {
         pPortDef = &m_sInPortDef;
 
-    	pthread_mutex_lock(&m_inBufMutex);
+        pthread_mutex_lock(&m_inBufMutex);
 
-    	for(nIndex = 0; nIndex < m_sInBufList.nBufArrSize; nIndex++)
-    	{
-    		if(pBufferHdr == &m_sInBufList.pBufArr[nIndex])
-    			break;
-    	}
+        for(nIndex = 0; nIndex < m_sInBufList.nBufArrSize; nIndex++)
+        {
+            if(pBufferHdr == &m_sInBufList.pBufArr[nIndex])
+                break;
+        }
 
-    	if(nIndex == m_sInBufList.nBufArrSize)
-    	{
-    		pthread_mutex_unlock(&m_inBufMutex);
-    		return OMX_ErrorBadParameter;
-    	}
+        if(nIndex == m_sInBufList.nBufArrSize)
+        {
+            pthread_mutex_unlock(&m_inBufMutex);
+            return OMX_ErrorBadParameter;
+        }
 
-    	if(m_sInBufList.nAllocBySelfFlags & (1<<nIndex))
-    	{
-    		free(m_sInBufList.pBufArr[nIndex].pBuffer);
-    		m_sInBufList.pBufArr[nIndex].pBuffer = NULL;
-    		m_sInBufList.nAllocBySelfFlags &= ~(1<<nIndex);
-    	}
+        if(m_sInBufList.nAllocBySelfFlags & (1<<nIndex))
+        {
+            free(m_sInBufList.pBufArr[nIndex].pBuffer);
+            m_sInBufList.pBufArr[nIndex].pBuffer = NULL;
+            m_sInBufList.nAllocBySelfFlags &= ~(1<<nIndex);
+        }
 
-    	m_sInBufList.nAllocSize--;
-        
-    	if(m_sInBufList.nAllocSize == 0)
-    		pPortDef->bPopulated = OMX_FALSE;
+        m_sInBufList.nAllocSize--;
 
-    	pthread_mutex_unlock(&m_inBufMutex);
+        if(m_sInBufList.nAllocSize == 0)
+            pPortDef->bPopulated = OMX_FALSE;
+
+        pthread_mutex_unlock(&m_inBufMutex);
     }
     else if (nPortIndex == m_sOutPortDef.nPortIndex)
     {
-	    pPortDef = &m_sOutPortDef;
+        pPortDef = &m_sOutPortDef;
 
-    	pthread_mutex_lock(&m_outBufMutex);
+        pthread_mutex_lock(&m_outBufMutex);
 
-    	for(nIndex = 0; nIndex < m_sOutBufList.nBufArrSize; nIndex++)
-    	{
-    		logi("pBufferHdr = %p, &m_sOutBufList.pBufArr[%d] = %p", pBufferHdr, (int)nIndex, &m_sOutBufList.pBufArr[nIndex]);
-    		if(pBufferHdr == &m_sOutBufList.pBufArr[nIndex])
-    			break;
-    	}
+        for(nIndex = 0; nIndex < m_sOutBufList.nBufArrSize; nIndex++)
+        {
+            logi("pBufferHdr = %p, &m_sOutBufList.pBufArr[%d] = %p", pBufferHdr, (int)nIndex, &m_sOutBufList.pBufArr[nIndex]);
+            if(pBufferHdr == &m_sOutBufList.pBufArr[nIndex])
+                break;
+        }
 
-    	logi("index = %d", (int)nIndex);
+        logi("index = %d", (int)nIndex);
 
-    	if(nIndex == m_sOutBufList.nBufArrSize)
-    	{
-    		pthread_mutex_unlock(&m_outBufMutex);
-    		return OMX_ErrorBadParameter;
-    	}
+        if(nIndex == m_sOutBufList.nBufArrSize)
+        {
+            pthread_mutex_unlock(&m_outBufMutex);
+            return OMX_ErrorBadParameter;
+        }
 
-    	if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
-    	{
-    		free(m_sOutBufList.pBufArr[nIndex].pBuffer);
-    		m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
-    		m_sOutBufList.nAllocBySelfFlags &= ~(1<<nIndex);
-    	}
+        if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
+        {
+            free(m_sOutBufList.pBufArr[nIndex].pBuffer);
+            m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
+            m_sOutBufList.nAllocBySelfFlags &= ~(1<<nIndex);
+        }
 
-    	m_sOutBufList.nAllocSize--;
+        m_sOutBufList.nAllocSize--;
         logv("*** m_sOutBufList.nAllocSize = %lu, nBufArrSize = %ld, nBufferCountActual = %lu, nBufferSize = %lu",
              m_sOutBufList.nAllocSize,
              m_sOutBufList.nBufArrSize,
              pPortDef->nBufferCountActual,
              pPortDef->nBufferSize);
-        
-    	if(m_sOutBufList.nAllocSize == 0)
-    		pPortDef->bPopulated = OMX_FALSE;
 
-    	pthread_mutex_unlock(&m_outBufMutex);
+        if(m_sOutBufList.nAllocSize == 0)
+            pPortDef->bPopulated = OMX_FALSE;
+
+        pthread_mutex_unlock(&m_outBufMutex);
     }
     else
         return OMX_ErrorBadParameter;
@@ -2109,13 +2112,13 @@ OMX_ERRORTYPE  omx_vdec::empty_this_buffer(OMX_IN OMX_HANDLETYPE hComponent, OMX
     logv("***emptyThisBuffer: pts = %lld , videoFormat = %d",
          pBufferHdr->nTimeStamp,
          m_eCompressionFormat);
-    
+
     ThrCmdType eCmd   = EmptyBuf;
     if(hComponent == NULL || pBufferHdr == NULL)
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
 
     if (!m_sInPortDef.bEnabled)
-    	return OMX_ErrorIncorrectStateOperation;
+        return OMX_ErrorIncorrectStateOperation;
 
     if (pBufferHdr->nInputPortIndex != 0x0  || pBufferHdr->nOutputPortIndex != OMX_NOPORT)
         return OMX_ErrorBadPortIndex;
@@ -2136,10 +2139,10 @@ OMX_ERRORTYPE  omx_vdec::fill_this_buffer(OMX_IN OMX_HANDLETYPE hComponent, OMX_
 
     logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
     if(hComponent == NULL || pBufferHdr == NULL)
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
 
     if (!m_sOutPortDef.bEnabled)
-    	return OMX_ErrorIncorrectStateOperation;
+        return OMX_ErrorIncorrectStateOperation;
 
     if (pBufferHdr->nOutputPortIndex != 0x1 || pBufferHdr->nInputPortIndex != OMX_NOPORT)
         return OMX_ErrorBadPortIndex;
@@ -2157,10 +2160,10 @@ OMX_ERRORTYPE  omx_vdec::set_callbacks(OMX_IN OMX_HANDLETYPE        hComp,
                                            OMX_IN OMX_CALLBACKTYPE* callbacks,
                                            OMX_IN OMX_PTR           appData)
 {
-	logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
+    logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
 
     if(hComp == NULL || callbacks == NULL || appData == NULL)
-    	return OMX_ErrorBadParameter;
+        return OMX_ErrorBadParameter;
     memcpy(&m_Callbacks, callbacks, sizeof(OMX_CALLBACKTYPE));
     m_pAppData = appData;
 
@@ -2171,7 +2174,7 @@ OMX_ERRORTYPE  omx_vdec::set_callbacks(OMX_IN OMX_HANDLETYPE        hComp,
 
 OMX_ERRORTYPE  omx_vdec::component_deinit(OMX_IN OMX_HANDLETYPE hComp)
 {
-	//logi(" COMPONENT_DEINIT");
+    //logi(" COMPONENT_DEINIT");
     logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     ThrCmdType    eCmd   = Stop;
@@ -2182,50 +2185,50 @@ OMX_ERRORTYPE  omx_vdec::component_deinit(OMX_IN OMX_HANDLETYPE hComp)
     // In that case, free the elements.
     if (m_sInBufList.nAllocSize > 0)
     {
-    	for(nIndex=0; nIndex<m_sInBufList.nBufArrSize; nIndex++)
-    	{
-    		if(m_sInBufList.pBufArr[nIndex].pBuffer != NULL)
-    		{
-    			if(m_sInBufList.nAllocBySelfFlags & (1<<nIndex))
-    			{
-    				free(m_sInBufList.pBufArr[nIndex].pBuffer);
-    				m_sInBufList.pBufArr[nIndex].pBuffer = NULL;
-    			}
-    		}
-    	}
+        for(nIndex=0; nIndex<m_sInBufList.nBufArrSize; nIndex++)
+        {
+            if(m_sInBufList.pBufArr[nIndex].pBuffer != NULL)
+            {
+                if(m_sInBufList.nAllocBySelfFlags & (1<<nIndex))
+                {
+                    free(m_sInBufList.pBufArr[nIndex].pBuffer);
+                    m_sInBufList.pBufArr[nIndex].pBuffer = NULL;
+                }
+            }
+        }
 
         if (m_sInBufList.pBufArr != NULL)
-        	free(m_sInBufList.pBufArr);
+            free(m_sInBufList.pBufArr);
 
         if (m_sInBufList.pBufHdrList != NULL)
-        	free(m_sInBufList.pBufHdrList);
+            free(m_sInBufList.pBufHdrList);
 
-    	memset(&m_sInBufList, 0, sizeof(struct _BufferList));
-    	m_sInBufList.nBufArrSize = m_sInPortDef.nBufferCountActual;
+        memset(&m_sInBufList, 0, sizeof(struct _BufferList));
+        m_sInBufList.nBufArrSize = m_sInPortDef.nBufferCountActual;
     }
 
     if (m_sOutBufList.nAllocSize > 0)
     {
-    	for(nIndex=0; nIndex<m_sOutBufList.nBufArrSize; nIndex++)
-    	{
-    		if(m_sOutBufList.pBufArr[nIndex].pBuffer != NULL)
-    		{
-    			if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
-    			{
-    				free(m_sOutBufList.pBufArr[nIndex].pBuffer);
-    				m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
-    			}
-    		}
-    	}
+        for(nIndex=0; nIndex<m_sOutBufList.nBufArrSize; nIndex++)
+        {
+            if(m_sOutBufList.pBufArr[nIndex].pBuffer != NULL)
+            {
+                if(m_sOutBufList.nAllocBySelfFlags & (1<<nIndex))
+                {
+                    free(m_sOutBufList.pBufArr[nIndex].pBuffer);
+                    m_sOutBufList.pBufArr[nIndex].pBuffer = NULL;
+                }
+            }
+        }
 
         if (m_sOutBufList.pBufArr != NULL)
-        	free(m_sOutBufList.pBufArr);
+            free(m_sOutBufList.pBufArr);
 
         if (m_sOutBufList.pBufHdrList != NULL)
-        	free(m_sOutBufList.pBufHdrList);
+            free(m_sOutBufList.pBufHdrList);
 
-    	memset(&m_sOutBufList, 0, sizeof(struct _BufferList));
-    	m_sOutBufList.nBufArrSize = m_sOutPortDef.nBufferCountActual;
+        memset(&m_sOutBufList, 0, sizeof(struct _BufferList));
+        m_sOutBufList.nBufArrSize = m_sOutPortDef.nBufferCountActual;
     }
 
     post_event(eCmd, eCmd, NULL);
@@ -2233,9 +2236,9 @@ OMX_ERRORTYPE  omx_vdec::component_deinit(OMX_IN OMX_HANDLETYPE hComp)
     // Wait for thread to exit so we can get the status into "error"
     pthread_join(m_thread_id, (void**)&eError);
     pthread_join(m_vdrv_thread_id, (void**)&eError);
-    
+
     logd("(f:%s, l:%d) two threads exit!", __FUNCTION__, __LINE__);
-    
+
     // close the pipe handles
     close(m_cmdpipe[0]);
     close(m_cmdpipe[1]);
@@ -2246,10 +2249,10 @@ OMX_ERRORTYPE  omx_vdec::component_deinit(OMX_IN OMX_HANDLETYPE hComp)
 
     if(m_decoder != NULL)
     {
-    	DestroyVideoDecoder(m_decoder);
-    	m_decoder = NULL;
+        DestroyVideoDecoder(m_decoder);
+        m_decoder = NULL;
     }
-    
+
     return eError;
 }
 
@@ -2260,7 +2263,7 @@ OMX_ERRORTYPE  omx_vdec::use_EGL_image(OMX_IN OMX_HANDLETYPE               hComp
                                           OMX_IN OMX_PTR                   appData,
                                           OMX_IN void*                     eglImage)
 {
-	logw("Error : use_EGL_image:  Not Implemented \n");
+    logw("Error : use_EGL_image:  Not Implemented \n");
     return OMX_ErrorNotImplemented;
 }
 
@@ -2269,108 +2272,108 @@ OMX_ERRORTYPE  omx_vdec::component_role_enum(OMX_IN  OMX_HANDLETYPE hComp,
                                              OMX_OUT OMX_U8*        role,
                                              OMX_IN  OMX_U32        index)
 {
-	//logi(" COMPONENT_ROLE_ENUM");
+    //logi(" COMPONENT_ROLE_ENUM");
     logi("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
-	OMX_ERRORTYPE eRet = OMX_ErrorNone;
+    OMX_ERRORTYPE eRet = OMX_ErrorNone;
 
-	if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n", role);
-		}
-		else
-		{
-			eRet = OMX_ErrorNoMore;
-		}
-	}
-	else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.h263",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}
-	else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.avc", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.avc",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}
-	else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vc1", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}
+    if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE))
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.mpeg4", OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n", role);
+        }
+        else
+        {
+            eRet = OMX_ErrorNoMore;
+        }
+    }
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.h263", OMX_MAX_STRINGNAME_SIZE))
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.h263",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.avc", OMX_MAX_STRINGNAME_SIZE))
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.avc",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vc1", OMX_MAX_STRINGNAME_SIZE))
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.vc1",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.vp8", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.vp8",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.vp8",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
     else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg1", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.mpeg1",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}
-    
-    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
-	{
-		if((0 == index) && role)
-		{
-			strncpy((char *)role, "video_decoder.mpeg2",OMX_MAX_STRINGNAME_SIZE);
-			logi("component_role_enum: role %s\n",role);
-		}
-		else
-		{
-			logi("\n No more roles \n");
-			eRet = OMX_ErrorNoMore;
-		}
-	}	
-	else
-	{
-		logd("\nERROR:Querying Role on Unknown Component\n");
-		eRet = OMX_ErrorInvalidComponentName;
-	}
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.mpeg1",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
 
-	return eRet;
+    else if(!strncmp((char*)m_cName, "OMX.allwinner.video.decoder.mpeg2", OMX_MAX_STRINGNAME_SIZE))
+    {
+        if((0 == index) && role)
+        {
+            strncpy((char *)role, "video_decoder.mpeg2",OMX_MAX_STRINGNAME_SIZE);
+            logi("component_role_enum: role %s\n",role);
+        }
+        else
+        {
+            logi("\n No more roles \n");
+            eRet = OMX_ErrorNoMore;
+        }
+    }
+    else
+    {
+        logd("\nERROR:Querying Role on Unknown Component\n");
+        eRet = OMX_ErrorInvalidComponentName;
+    }
+
+    return eRet;
 }
 
 OMX_ERRORTYPE omx_vdec::send_vdrv_feedback_msg(OMX_IN OMX_VDRV_FEEDBACK_MSGTYPE nMsg,
@@ -2383,19 +2386,19 @@ OMX_ERRORTYPE omx_vdec::send_vdrv_feedback_msg(OMX_IN OMX_VDRV_FEEDBACK_MSGTYPE 
 
     if(m_state == OMX_StateInvalid)
     {
-    	logd("ERROR: Send Command in Invalid State\n");
+        logd("ERROR: Send Command in Invalid State\n");
         return OMX_ErrorInvalidState;
     }
 
     switch (nMsg)
     {
         case OMX_VdrvFeedbackMsg_NotifyEos:
-        	logi("(omx_vdec, f:%s, l:%d) send OMX_VdrvFeedbackMsg_NotifyEos", __FUNCTION__, __LINE__);
+            logi("(omx_vdec, f:%s, l:%d) send OMX_VdrvFeedbackMsg_NotifyEos", __FUNCTION__, __LINE__);
             eCmd = VdrvNotifyEos;
-	        break;
+            break;
 
         case OMX_VdrvFeedbackMsg_ResolutionChange:
-        	logi("(omx_vdec, f:%s, l:%d) send OMX_VdrvFeedbackMsg_ResolutionChange", __FUNCTION__, __LINE__);
+            logi("(omx_vdec, f:%s, l:%d) send OMX_VdrvFeedbackMsg_ResolutionChange", __FUNCTION__, __LINE__);
             eCmd = VdrvResolutionChange;
             break;
 
@@ -2403,7 +2406,7 @@ OMX_ERRORTYPE omx_vdec::send_vdrv_feedback_msg(OMX_IN OMX_VDRV_FEEDBACK_MSGTYPE 
             logw("(omx_vdec, f:%s, l:%d) send unknown feedback message[0x%x]", __FUNCTION__, __LINE__, nMsg);
             return OMX_ErrorUndefined;
     }
-    
+
     post_event(eCmd, param1, cmdData);
 
     return eError;
@@ -2441,7 +2444,7 @@ OMX_ERRORTYPE omx_vdec::post_event(OMX_IN ThrCmdType eCmd,
            return OMX_ErrorNone;
         }
     }
-    
+
     pthread_mutex_unlock(&m_pipeMutex);
 
     return OMX_ErrorNone;
@@ -2471,11 +2474,11 @@ int convertAddress_Phy2Vir(VideoPicture *picture)
 
 /*******************************************************************************
 Function name: detectPipeDataToRead
-Description: 
-    
-Parameters: 
-    
-Return: 
+Description:
+
+Parameters:
+
+Return:
     1:data ready
     0:no data
 Time: 2013/9/30
@@ -2512,7 +2515,7 @@ int waitPipeDataToRead(int nPipeFd, int nTimeUs)
 static int count=0;
 static void* ComponentThread(void* pThreadData)
 {
-	int                     decodeResult;
+    int                     decodeResult;
     VideoPicture*           picture;
 
     int                     i;
@@ -2534,7 +2537,7 @@ static void* ComponentThread(void* pThreadData)
     OMX_BOOL                port_setting_match;
     OMX_BOOL                nInBufEos;
     OMX_BOOL                nVdrvNotifyEosFlag;
-    
+
     OMX_PTR                 pMarkData;
     OMX_HANDLETYPE          hMarkTargetComponent;
     struct timeval          timeout;
@@ -2551,7 +2554,7 @@ static void* ComponentThread(void* pThreadData)
 
     int nSemVal;
     int nRetSemGetValue;
-    
+
     // Recover the pointer to my component specific data
     omx_vdec* pSelf = (omx_vdec*)pThreadData;
 
@@ -2576,122 +2579,122 @@ static void* ComponentThread(void* pThreadData)
                 logd("error: read pipe data failed!,ret = %d",(int)readRet);
                 goto EXIT;
             }
-            
-	        readRet = read(pSelf->m_cmddatapipe[0], &cmddata, sizeof(cmddata));
+
+            readRet = read(pSelf->m_cmddatapipe[0], &cmddata, sizeof(cmddata));
             if(readRet<0)
             {
                 logd("error: read pipe data failed!,ret = %d",(int)readRet);
                 goto EXIT;
             }
-            
+
             //*State transition command
-	        if (cmd == SetState)
-	        {
-	        	logi(" set state command, cmd = %d, cmddata = %d.", (int)cmd, (int)cmddata);
+            if (cmd == SetState)
+            {
+                logi(" set state command, cmd = %d, cmddata = %d.", (int)cmd, (int)cmddata);
                 //*If the parameter states a transition to the same state
                 // raise a same state transition error.
                 if (pSelf->m_state == (OMX_STATETYPE)(cmddata))
                 {
-                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorSameState, 0 , NULL);
+                    pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorSameState, 0 , NULL);
                 }
                 else
                 {
-	                //*transitions/callbacks made based on state transition table
+                    //*transitions/callbacks made based on state transition table
                     // cmddata contains the target state
-	                switch ((OMX_STATETYPE)(cmddata))
-	                {
-             	        case OMX_StateInvalid:
-             	        	pSelf->m_state = OMX_StateInvalid;
-             	        	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInvalidState, 0 , NULL);
-             	        	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
-			                break;
+                    switch ((OMX_STATETYPE)(cmddata))
+                    {
+                         case OMX_StateInvalid:
+                             pSelf->m_state = OMX_StateInvalid;
+                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInvalidState, 0 , NULL);
+                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
+                            break;
 
-		                case OMX_StateLoaded:
+                        case OMX_StateLoaded:
                             if (pSelf->m_state == OMX_StateIdle || pSelf->m_state == OMX_StateWaitForResources)
                             {
-			                    nTimeout = 0x0;
-			                    while (1)
-			                    {
+                                nTimeout = 0x0;
+                                while (1)
+                                {
                                     //*Transition happens only when the ports are unpopulated
-			                        if (!pSelf->m_sInPortDef.bPopulated && !pSelf->m_sOutPortDef.bPopulated)
-			                        {
-			                        	pSelf->m_state = OMX_StateLoaded;
-			                        	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
-                                        
- 			                            //* close decoder
-			                        	//* TODO.
+                                    if (!pSelf->m_sInPortDef.bPopulated && !pSelf->m_sOutPortDef.bPopulated)
+                                    {
+                                        pSelf->m_state = OMX_StateLoaded;
+                                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
 
-				                        break;
- 	                                }
-				                    else if (nTimeout++ > OMX_MAX_TIMEOUTS)
-				                    {
-				                    	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInsufficientResources, 0 , NULL);
- 	                                    logw("Transition to loaded failed\n");
-				                        break;
-				                    }
+                                         //* close decoder
+                                        //* TODO.
 
-			                        usleep(OMX_TIMEOUT*1000);
-			                    }
+                                        break;
+                                     }
+                                    else if (nTimeout++ > OMX_MAX_TIMEOUTS)
+                                    {
+                                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInsufficientResources, 0 , NULL);
+                                         logw("Transition to loaded failed\n");
+                                        break;
+                                    }
+
+                                    usleep(OMX_TIMEOUT*1000);
+                                }
 
                                 post_message_to_vdrv(pSelf, OMX_VdrvCommand_CloseVdecLib);
                                 logi("(f:%s, l:%d) wait for OMX_VdrvCommand_CloseVdecLib", __FUNCTION__, __LINE__);
                                 sem_wait(&pSelf->m_vdrv_cmd_lock);
                                 logi("(f:%s, l:%d) wait for OMX_VdrvCommand_CloseVdecLib done!", __FUNCTION__, __LINE__);
-		                    }
-			                else
-			                {
-			                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
-			                }
+                            }
+                            else
+                            {
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                            }
 
-			                break;
+                            break;
 
                         case OMX_StateIdle:
-		                    if (pSelf->m_state == OMX_StateInvalid)
-		                    	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
-		                    else
-		                    {
-			                    //*Return buffers if currently in pause and executing
-			                    if (pSelf->m_state == OMX_StatePause || pSelf->m_state == OMX_StateExecuting)
-			                    {
-			                    	pthread_mutex_lock(&pSelf->m_inBufMutex);
+                            if (pSelf->m_state == OMX_StateInvalid)
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                            else
+                            {
+                                //*Return buffers if currently in pause and executing
+                                if (pSelf->m_state == OMX_StatePause || pSelf->m_state == OMX_StateExecuting)
+                                {
+                                    pthread_mutex_lock(&pSelf->m_inBufMutex);
 
                                     while (pSelf->m_sInBufList.nSizeOfList > 0)
                                     {
-                                    	pSelf->m_sInBufList.nSizeOfList--;
-                                    	pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
-                                    			                           pSelf->m_pAppData,
-                                    			                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
+                                        pSelf->m_sInBufList.nSizeOfList--;
+                                        pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
+                                                                           pSelf->m_pAppData,
+                                                                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
 
-                                    	if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
-                                    		pSelf->m_sInBufList.nReadPos = 0;
+                                        if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
+                                            pSelf->m_sInBufList.nReadPos = 0;
                                     }
 
                                     pSelf->m_sInBufList.nReadPos  = 0;
                                     pSelf->m_sInBufList.nWritePos = 0;
 
-			                    	pthread_mutex_unlock(&pSelf->m_inBufMutex);
+                                    pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
 
-			                    	pthread_mutex_lock(&pSelf->m_outBufMutex);
+                                    pthread_mutex_lock(&pSelf->m_outBufMutex);
 
                                     while (pSelf->m_sOutBufList.nSizeOfList > 0)
                                     {
-                                    	pSelf->m_sOutBufList.nSizeOfList--;
-                                    	pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
-                                    			                           pSelf->m_pAppData,
-                                    			                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
+                                        pSelf->m_sOutBufList.nSizeOfList--;
+                                        pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
+                                                                           pSelf->m_pAppData,
+                                                                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
 
-                                    	if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
-                                    		pSelf->m_sOutBufList.nReadPos = 0;
+                                        if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
+                                            pSelf->m_sOutBufList.nReadPos = 0;
                                     }
 
                                     pSelf->m_sOutBufList.nReadPos  = 0;
                                     pSelf->m_sOutBufList.nWritePos = 0;
 
-			                    	pthread_mutex_unlock(&pSelf->m_outBufMutex);
-			                    }
-			                    else    //OMX_StateLoaded -> OMX_StateIdle
-			                    {
+                                    pthread_mutex_unlock(&pSelf->m_outBufMutex);
+                                }
+                                else    //OMX_StateLoaded -> OMX_StateIdle
+                                {
                                     //*we not create decoder here
                                     /*
                                     post_message_to_vdrv(pSelf, OMX_VdrvCommand_PrepareVdecLib);
@@ -2701,238 +2704,238 @@ static void* ComponentThread(void* pThreadData)
                                     */
                                 }
 
-			                    nTimeout = 0x0;
-			                    while (1)
-			                    {
-			                        //*Ports have to be populated before transition completes
-			                        if ((!pSelf->m_sInPortDef.bEnabled && !pSelf->m_sOutPortDef.bEnabled)   ||
+                                nTimeout = 0x0;
+                                while (1)
+                                {
+                                    //*Ports have to be populated before transition completes
+                                    if ((!pSelf->m_sInPortDef.bEnabled && !pSelf->m_sOutPortDef.bEnabled)   ||
                                         (pSelf->m_sInPortDef.bPopulated && pSelf->m_sOutPortDef.bPopulated))
                                     {
-			                        	pSelf->m_state = OMX_StateIdle;
+                                        pSelf->m_state = OMX_StateIdle;
                                         //*wake up vdrvThread
                                         sem_post(&pSelf->m_sem_vbs_input);
                                         sem_post(&pSelf->m_sem_frame_output);
-			                        	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
+                                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
 
                                         //* Open decoder
-			                        	//* TODO.
- 		                                break;
-			                        }
-			                        else if (nTimeout++ > OMX_MAX_TIMEOUTS)
-			                        {
-			                        	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInsufficientResources, 0 , NULL);
-                		                logw("Idle transition failed\n");
-	                                    break;
-				                    }
+                                        //* TODO.
+                                         break;
+                                    }
+                                    else if (nTimeout++ > OMX_MAX_TIMEOUTS)
+                                    {
+                                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorInsufficientResources, 0 , NULL);
+                                        logw("Idle transition failed\n");
+                                        break;
+                                    }
 
-			                        usleep(OMX_TIMEOUT*1000);
-			                    }
-		                    }
+                                    usleep(OMX_TIMEOUT*1000);
+                                }
+                            }
 
-		                    break;
+                            break;
 
-		                case OMX_StateExecuting:
+                        case OMX_StateExecuting:
                             //*Transition can only happen from pause or idle state
                             if (pSelf->m_state == OMX_StateIdle || pSelf->m_state == OMX_StatePause)
                             {
                                 //*Return buffers if currently in pause
-			                    if (pSelf->m_state == OMX_StatePause)
-			                    {
-			                    	pthread_mutex_lock(&pSelf->m_inBufMutex);
+                                if (pSelf->m_state == OMX_StatePause)
+                                {
+                                    pthread_mutex_lock(&pSelf->m_inBufMutex);
 
                                     while (pSelf->m_sInBufList.nSizeOfList > 0)
                                     {
-                                    	pSelf->m_sInBufList.nSizeOfList--;
-                                    	pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
-                                    			                           pSelf->m_pAppData,
-                                    			                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
+                                        pSelf->m_sInBufList.nSizeOfList--;
+                                        pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
+                                                                           pSelf->m_pAppData,
+                                                                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
 
-                                    	if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
-                                    		pSelf->m_sInBufList.nReadPos = 0;
+                                        if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
+                                            pSelf->m_sInBufList.nReadPos = 0;
                                     }
 
                                     pSelf->m_sInBufList.nReadPos  = 0;
                                     pSelf->m_sInBufList.nWritePos = 0;
 
-			                    	pthread_mutex_unlock(&pSelf->m_inBufMutex);
+                                    pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
-			                    	pthread_mutex_lock(&pSelf->m_outBufMutex);
+                                    pthread_mutex_lock(&pSelf->m_outBufMutex);
 
                                     while (pSelf->m_sOutBufList.nSizeOfList > 0)
                                     {
-                                    	pSelf->m_sOutBufList.nSizeOfList--;
-                                    	pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
-                                    			                           pSelf->m_pAppData,
-                                    			                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
+                                        pSelf->m_sOutBufList.nSizeOfList--;
+                                        pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
+                                                                           pSelf->m_pAppData,
+                                                                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
 
-                                    	if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
-                                    		pSelf->m_sOutBufList.nReadPos = 0;
+                                        if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
+                                            pSelf->m_sOutBufList.nReadPos = 0;
                                     }
 
                                     pSelf->m_sOutBufList.nReadPos  = 0;
                                     pSelf->m_sOutBufList.nWritePos = 0;
 
-			                    	pthread_mutex_unlock(&pSelf->m_outBufMutex);
-			                    }
+                                    pthread_mutex_unlock(&pSelf->m_outBufMutex);
+                                }
 
-			                    pSelf->m_state = OMX_StateExecuting;
-			                    pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
-			                }
-			                else
-			                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                                pSelf->m_state = OMX_StateExecuting;
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
+                            }
+                            else
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
 
                             nInBufEos            = OMX_FALSE;
                             pMarkData            = NULL;
                             hMarkTargetComponent = NULL;
 
-			                break;
+                            break;
 
                         case OMX_StatePause:
                             // Transition can only happen from idle or executing state
-		                    if (pSelf->m_state == OMX_StateIdle || pSelf->m_state == OMX_StateExecuting)
-		                    {
-		                    	pSelf->m_state = OMX_StatePause;
-		                    	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
-		                    }
-			                else
-			                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                            if (pSelf->m_state == OMX_StateIdle || pSelf->m_state == OMX_StateExecuting)
+                            {
+                                pSelf->m_state = OMX_StatePause;
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
+                            }
+                            else
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
 
-		                    break;
+                            break;
 
                         case OMX_StateWaitForResources:
-		                    if (pSelf->m_state == OMX_StateLoaded)
-		                    {
-		                    	pSelf->m_state = OMX_StateWaitForResources;
-		                    	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
-			                }
-			                else
-			                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                            if (pSelf->m_state == OMX_StateLoaded)
+                            {
+                                pSelf->m_state = OMX_StateWaitForResources;
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandStateSet, pSelf->m_state, NULL);
+                            }
+                            else
+                                pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
 
-		                    break;
+                            break;
 
                         default:
-		                	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
-		                	break;
+                            pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorIncorrectStateTransition, 0 , NULL);
+                            break;
 
-		            }
+                    }
                 }
-	        }
-	        else if (cmd == StopPort)
-	        {
-	        	logd(" stop port command, cmddata = %d.", (int)cmddata);
-                
-	            //*Stop Port(s)
-	            // cmddata contains the port index to be stopped.
+            }
+            else if (cmd == StopPort)
+            {
+                logd(" stop port command, cmddata = %d.", (int)cmddata);
+
+                //*Stop Port(s)
+                // cmddata contains the port index to be stopped.
                 // It is assumed that 0 is input and 1 is output port for this component
                 // The cmddata value -1 means that both input and output ports will be stopped.
-	            if (cmddata == 0x0 || (OMX_S32)cmddata == -1)
-	            {
-	                //*Return all input buffers
-                	pthread_mutex_lock(&pSelf->m_inBufMutex);
+                if (cmddata == 0x0 || (OMX_S32)cmddata == -1)
+                {
+                    //*Return all input buffers
+                    pthread_mutex_lock(&pSelf->m_inBufMutex);
 
                     while (pSelf->m_sInBufList.nSizeOfList > 0)
                     {
-                    	pSelf->m_sInBufList.nSizeOfList--;
-                    	pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
-                    			                           pSelf->m_pAppData,
-                    			                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
+                        pSelf->m_sInBufList.nSizeOfList--;
+                        pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
+                                                           pSelf->m_pAppData,
+                                                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
 
-                    	if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
-                    		pSelf->m_sInBufList.nReadPos = 0;
+                        if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
+                            pSelf->m_sInBufList.nReadPos = 0;
                     }
 
                     pSelf->m_sInBufList.nReadPos  = 0;
                     pSelf->m_sInBufList.nWritePos = 0;
-                    
-                	pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
- 		            //*Disable port
-					pSelf->m_sInPortDef.bEnabled = OMX_FALSE;
-		        }
+                    pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
-	            if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
-	            {
-		            //*Return all output buffers
-                	pthread_mutex_lock(&pSelf->m_outBufMutex);
+                     //*Disable port
+                    pSelf->m_sInPortDef.bEnabled = OMX_FALSE;
+                }
+
+                if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
+                {
+                    //*Return all output buffers
+                    pthread_mutex_lock(&pSelf->m_outBufMutex);
 
                     while (pSelf->m_sOutBufList.nSizeOfList > 0)
                     {
-                    	pSelf->m_sOutBufList.nSizeOfList--;
-                    	pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
-                    			                           pSelf->m_pAppData,
-                    			                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
+                        pSelf->m_sOutBufList.nSizeOfList--;
+                        pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
+                                                           pSelf->m_pAppData,
+                                                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
 
-                    	if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
-                    		pSelf->m_sOutBufList.nReadPos = 0;
+                        if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
+                            pSelf->m_sOutBufList.nReadPos = 0;
                     }
 
                     pSelf->m_sOutBufList.nReadPos  = 0;
                     pSelf->m_sOutBufList.nWritePos = 0;
-                	pthread_mutex_unlock(&pSelf->m_outBufMutex);
+                    pthread_mutex_unlock(&pSelf->m_outBufMutex);
 
-       	            // Disable port
-					pSelf->m_sOutPortDef.bEnabled = OMX_FALSE;
-		        }
+                       // Disable port
+                    pSelf->m_sOutPortDef.bEnabled = OMX_FALSE;
+                }
 
-		        // Wait for all buffers to be freed
-		        nTimeout = 0x0;
-		        while (1)
-		        {
-		            if (cmddata == 0x0 && !pSelf->m_sInPortDef.bPopulated)
-		            {
-		                //*Return cmdcomplete event if input unpopulated
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
-			            break;
-		            }
+                // Wait for all buffers to be freed
+                nTimeout = 0x0;
+                while (1)
+                {
+                    if (cmddata == 0x0 && !pSelf->m_sInPortDef.bPopulated)
+                    {
+                        //*Return cmdcomplete event if input unpopulated
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
+                        break;
+                    }
 
-		            if (cmddata == 0x1 && !pSelf->m_sOutPortDef.bPopulated)
-		            {
-		                //*Return cmdcomplete event if output unpopulated
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
-			            break;
-		            }
+                    if (cmddata == 0x1 && !pSelf->m_sOutPortDef.bPopulated)
+                    {
+                        //*Return cmdcomplete event if output unpopulated
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
+                        break;
+                    }
 
-		            if ((OMX_S32)cmddata == -1 &&  !pSelf->m_sInPortDef.bPopulated && !pSelf->m_sOutPortDef.bPopulated)
-		            {
-            		    //*Return cmdcomplete event if inout & output unpopulated
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
-			            break;
-		            }
+                    if ((OMX_S32)cmddata == -1 &&  !pSelf->m_sInPortDef.bPopulated && !pSelf->m_sOutPortDef.bPopulated)
+                    {
+                        //*Return cmdcomplete event if inout & output unpopulated
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
+                        break;
+                    }
 
-                    //* Here , we sleep 500 ms.                                         
+                    //* Here , we sleep 500 ms.
                     //* In the duration , if not all buffers be freed, we also return OMX_EventCmdComplete
-		            if (nTimeout++ > OMX_MAX_TIMEOUTS_STOP_PORT)
-		            {
+                    if (nTimeout++ > OMX_MAX_TIMEOUTS_STOP_PORT)
+                    {
                         logw("timeOut when wait for all buffer to be freed in stopPort command! But we also return OMX_EventCmdComplete!");
                         if(cmddata == 0x0)
                         {
                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
-			                break;
+                            break;
                         }
                         else if(cmddata == 0x1)
                         {
                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
-			                break;
+                            break;
                         }
                         else if((OMX_S32)cmddata == -1)
                         {
                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x0, NULL);
-    		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
-    			            break;
+                            pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortDisable, 0x1, NULL);
+                            break;
                         }
-                        
-		            	//pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorPortUnresponsiveDuringDeallocation, 0 , NULL);
-       		            //break;
-		            }
+
+                        //pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorPortUnresponsiveDuringDeallocation, 0 , NULL);
+                           //break;
+                    }
 
                     usleep(OMX_TIMEOUT*1000);
-		        }
-	        }
-	        else if (cmd == RestartPort)
-	        {
-	        	logd(" restart port command. pSelf->m_state[%d] , cmddata=%d", pSelf->m_state, (int)cmddata);
-                
+                }
+            }
+            else if (cmd == RestartPort)
+            {
+                logd(" restart port command. pSelf->m_state[%d] , cmddata=%d", pSelf->m_state, (int)cmddata);
+
                 //*Restart Port(s)
                 // cmddata contains the port index to be restarted.
                 // It is assumed that 0 is input and 1 is output port for this component.
@@ -2940,60 +2943,60 @@ static void* ComponentThread(void* pThreadData)
 
                 /*
                 if (cmddata == 0x0 || (OMX_S32)cmddata == -1)
-                	pSelf->m_sInPortDef.bEnabled = OMX_TRUE;
+                    pSelf->m_sInPortDef.bEnabled = OMX_TRUE;
 
-	            if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
-	            	pSelf->m_sOutPortDef.bEnabled = OMX_TRUE;
+                if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
+                    pSelf->m_sOutPortDef.bEnabled = OMX_TRUE;
                 */
-                
- 	            // Wait for port to be populated
-		        nTimeout = 0x0;
-		        while (1)
-		        {
+
+                 // Wait for port to be populated
+                nTimeout = 0x0;
+                while (1)
+                {
                     // Return cmdcomplete event if input port populated
-		            if (cmddata == 0x0 && (pSelf->m_state == OMX_StateLoaded || pSelf->m_sInPortDef.bPopulated))
-		            {
+                    if (cmddata == 0x0 && (pSelf->m_state == OMX_StateLoaded || pSelf->m_sInPortDef.bPopulated))
+                    {
                         pSelf->m_sInPortDef.bEnabled = OMX_TRUE;
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x0, NULL);
-			            break;
-		            }
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x0, NULL);
+                        break;
+                    }
                     // Return cmdcomplete event if output port populated
-		            else if (cmddata == 0x1 && (pSelf->m_state == OMX_StateLoaded || pSelf->m_sOutPortDef.bPopulated))
-		            {
+                    else if (cmddata == 0x1 && (pSelf->m_state == OMX_StateLoaded || pSelf->m_sOutPortDef.bPopulated))
+                    {
                         pSelf->m_sOutPortDef.bEnabled = OMX_TRUE;
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x1, NULL);
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x1, NULL);
                         break;
-		            }
+                    }
                     // Return cmdcomplete event if input and output ports populated
-		            else if ((OMX_S32)cmddata == -1 && (pSelf->m_state == OMX_StateLoaded || (pSelf->m_sInPortDef.bPopulated && pSelf->m_sOutPortDef.bPopulated)))
-		            {
+                    else if ((OMX_S32)cmddata == -1 && (pSelf->m_state == OMX_StateLoaded || (pSelf->m_sInPortDef.bPopulated && pSelf->m_sOutPortDef.bPopulated)))
+                    {
                         pSelf->m_sInPortDef.bEnabled = OMX_TRUE;
                         pSelf->m_sOutPortDef.bEnabled = OMX_TRUE;
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x0, NULL);
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x1, NULL);
-			            break;
-		            }
-		            else if (nTimeout++ > OMX_MAX_TIMEOUTS)
-		            {
-		            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorPortUnresponsiveDuringAllocation, 0, NULL);
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x0, NULL);
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandPortEnable, 0x1, NULL);
                         break;
-	                }
+                    }
+                    else if (nTimeout++ > OMX_MAX_TIMEOUTS)
+                    {
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorPortUnresponsiveDuringAllocation, 0, NULL);
+                        break;
+                    }
 
                     usleep(OMX_TIMEOUT*1000);
-		        }
+                }
 
-		        if(port_setting_match == OMX_FALSE)
-		        	port_setting_match = OMX_TRUE;
-	        }
-	        else if (cmd == Flush)
-	        {
-	        	logd(" flush command.");
-                
-	            //*Flush port(s)
+                if(port_setting_match == OMX_FALSE)
+                    port_setting_match = OMX_TRUE;
+            }
+            else if (cmd == Flush)
+            {
+                logd(" flush command.");
+
+                //*Flush port(s)
                 // cmddata contains the port index to be flushed.
                 // It is assumed that 0 is input and 1 is output port for this component
                 // The cmddata value -1 means that both input and output ports will be flushed.
-                
+
                 if(cmddata == OMX_ALL || cmddata == 0x1 || (OMX_S32)cmddata == -1)   //if request flush input and output port, we reset decoder!
                 {
                     logd(" flush all port! we reset decoder!");
@@ -3004,87 +3007,87 @@ static void* ComponentThread(void* pThreadData)
                     sem_wait(&pSelf->m_vdrv_cmd_lock);
                     logd("(f:%s, l:%d) wait for OMX_VdrvCommand_FlushVdecLib done!", __FUNCTION__, __LINE__);
                 }
-	            if (cmddata == 0x0 || (OMX_S32)cmddata == -1)
-	            {
-	                // Return all input buffers and send cmdcomplete
-                	pthread_mutex_lock(&pSelf->m_inBufMutex);
+                if (cmddata == 0x0 || (OMX_S32)cmddata == -1)
+                {
+                    // Return all input buffers and send cmdcomplete
+                    pthread_mutex_lock(&pSelf->m_inBufMutex);
 
                     while (pSelf->m_sInBufList.nSizeOfList > 0)
                     {
-                    	pSelf->m_sInBufList.nSizeOfList--;
-                    	pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
-                    			                           pSelf->m_pAppData,
-                    			                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
+                        pSelf->m_sInBufList.nSizeOfList--;
+                        pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp,
+                                                           pSelf->m_pAppData,
+                                                           pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos++]);
 
-                    	if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
-                    		pSelf->m_sInBufList.nReadPos = 0;
+                        if (pSelf->m_sInBufList.nReadPos >= pSelf->m_sInBufList.nBufArrSize)
+                            pSelf->m_sInBufList.nReadPos = 0;
                     }
 
                     pSelf->m_sInBufList.nReadPos  = 0;
                     pSelf->m_sInBufList.nWritePos = 0;
 
-                	pthread_mutex_unlock(&pSelf->m_inBufMutex);
+                    pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
-					pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandFlush, 0x0, NULL);
-		        }
+                    pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandFlush, 0x0, NULL);
+                }
 
-	            if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
-	            {
-	                // Return all output buffers and send cmdcomplete
-                	pthread_mutex_lock(&pSelf->m_outBufMutex);
+                if (cmddata == 0x1 || (OMX_S32)cmddata == -1)
+                {
+                    // Return all output buffers and send cmdcomplete
+                    pthread_mutex_lock(&pSelf->m_outBufMutex);
 
                     while (pSelf->m_sOutBufList.nSizeOfList > 0)
                     {
-                    	pSelf->m_sOutBufList.nSizeOfList--;
-                    	pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
-                    			                           pSelf->m_pAppData,
-                    			                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
+                        pSelf->m_sOutBufList.nSizeOfList--;
+                        pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp,
+                                                           pSelf->m_pAppData,
+                                                           pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++]);
 
-                    	if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
-                    		pSelf->m_sOutBufList.nReadPos = 0;
+                        if (pSelf->m_sOutBufList.nReadPos >= pSelf->m_sOutBufList.nBufArrSize)
+                            pSelf->m_sOutBufList.nReadPos = 0;
                     }
 
                     pSelf->m_sOutBufList.nReadPos  = 0;
                     pSelf->m_sOutBufList.nWritePos = 0;
 
-                	pthread_mutex_unlock(&pSelf->m_outBufMutex);
+                    pthread_mutex_unlock(&pSelf->m_outBufMutex);
 
-					pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandFlush, 0x1, NULL);
-		        }
-	        }
-	        else if (cmd == Stop)
-	        {
-	        	logd(" stop command. pSelf->m_state[%d]", pSelf->m_state);
+                    pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventCmdComplete, OMX_CommandFlush, 0x1, NULL);
+                }
+            }
+            else if (cmd == Stop)
+            {
+                logd(" stop command. pSelf->m_state[%d]", pSelf->m_state);
                 post_message_to_vdrv(pSelf, OMX_VdrvCommand_Stop);
                 sem_post(&pSelf->m_sem_vbs_input);
                 sem_post(&pSelf->m_sem_frame_output);
                 logd("(f:%s, l:%d) wait for OMX_VdrvCommand_Stop", __FUNCTION__, __LINE__);
                 sem_wait(&pSelf->m_vdrv_cmd_lock);
                 logd("(f:%s, l:%d) wait for OMX_VdrvCommand_Stop done!", __FUNCTION__, __LINE__);
-  		        //*Kill thread
- 	            goto EXIT;
-	        }
-	        else if (cmd == FillBuf)
-	        {
-	            //*Fill buffer
-	        	pthread_mutex_lock(&pSelf->m_outBufMutex);
-	        	if (pSelf->m_sOutBufList.nSizeOfList < pSelf->m_sOutBufList.nAllocSize)
-	        	{
-	        		pSelf->m_sOutBufList.nSizeOfList++;
-	        		pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nWritePos++] = ((OMX_BUFFERHEADERTYPE*) cmddata);
-
-	                if (pSelf->m_sOutBufList.nWritePos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize)
-	                	pSelf->m_sOutBufList.nWritePos = 0;
-	        	}
-	        	pthread_mutex_unlock(&pSelf->m_outBufMutex);
+                  //*Kill thread
+                 goto EXIT;
             }
-	        else if (cmd == EmptyBuf)
-	        {
+            else if (cmd == FillBuf)
+            {
+                //*Fill buffer
+                pthread_mutex_lock(&pSelf->m_outBufMutex);
+                if (pSelf->m_sOutBufList.nSizeOfList < pSelf->m_sOutBufList.nAllocSize)
+                {
+                    pSelf->m_sOutBufList.nSizeOfList++;
+                    pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nWritePos++] = ((OMX_BUFFERHEADERTYPE*) cmddata);
+
+                    if (pSelf->m_sOutBufList.nWritePos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize)
+                        pSelf->m_sOutBufList.nWritePos = 0;
+                }
+                pthread_mutex_unlock(&pSelf->m_outBufMutex);
+            }
+            else if (cmd == EmptyBuf)
+            {
                 OMX_BUFFERHEADERTYPE* pTmpInBufHeader = (OMX_BUFFERHEADERTYPE*) cmddata;
                 OMX_TICKS   nInterval;
 
                 //*Empty buffer
-	    	    pthread_mutex_lock(&pSelf->m_inBufMutex);
+                pthread_mutex_lock(&pSelf->m_inBufMutex);
                 if(0 == pTmpInBufHeader->nTimeStamp)
                 {
                     logi("why cur vbs input nTimeStamp=0? prevPts=%lld", pSelf->m_nInportPrevTimeStamp);
@@ -3100,7 +3103,7 @@ static void* ComponentThread(void* pThreadData)
                             logd("pts jump [%lld]us, prev[%lld],cur[%lld],need reset vdeclib", nInterval, pSelf->m_nInportPrevTimeStamp, pTmpInBufHeader->nTimeStamp);
                             pSelf->m_JumpFlag = OMX_TRUE;
                         }
-                        
+
                         pSelf->m_nInportPrevTimeStamp = pTmpInBufHeader->nTimeStamp;
                     }
                     else //*first InBuf data
@@ -3108,40 +3111,40 @@ static void* ComponentThread(void* pThreadData)
                         pSelf->m_nInportPrevTimeStamp = pTmpInBufHeader->nTimeStamp;
                     }
                 }
-				
-                if (pSelf->m_sInBufList.nSizeOfList < pSelf->m_sInBufList.nAllocSize)
-	        	{
-	        		pSelf->m_sInBufList.nSizeOfList++;
-	        		pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nWritePos++] = ((OMX_BUFFERHEADERTYPE*) cmddata);
 
-	                if (pSelf->m_sInBufList.nWritePos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
-	                	pSelf->m_sInBufList.nWritePos = 0;
-	        	}
-                
-                logi("(omx_vdec, f:%s, l:%d) nTimeStamp[%lld], nAllocLen[%d], nFilledLen[%d], nOffset[%d], nFlags[0x%x], nOutputPortIndex[%d], nInputPortIndex[%d]", __FUNCTION__, __LINE__, 
-                    pTmpInBufHeader->nTimeStamp, 
-                    (int)pTmpInBufHeader->nAllocLen, 
-                    (int)pTmpInBufHeader->nFilledLen, 
-                    (int)pTmpInBufHeader->nOffset, 
-                    (int)pTmpInBufHeader->nFlags, 
-                    (int)pTmpInBufHeader->nOutputPortIndex, 
+                if (pSelf->m_sInBufList.nSizeOfList < pSelf->m_sInBufList.nAllocSize)
+                {
+                    pSelf->m_sInBufList.nSizeOfList++;
+                    pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nWritePos++] = ((OMX_BUFFERHEADERTYPE*) cmddata);
+
+                    if (pSelf->m_sInBufList.nWritePos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
+                        pSelf->m_sInBufList.nWritePos = 0;
+                }
+
+                logi("(omx_vdec, f:%s, l:%d) nTimeStamp[%lld], nAllocLen[%d], nFilledLen[%d], nOffset[%d], nFlags[0x%x], nOutputPortIndex[%d], nInputPortIndex[%d]", __FUNCTION__, __LINE__,
+                    pTmpInBufHeader->nTimeStamp,
+                    (int)pTmpInBufHeader->nAllocLen,
+                    (int)pTmpInBufHeader->nFilledLen,
+                    (int)pTmpInBufHeader->nOffset,
+                    (int)pTmpInBufHeader->nFlags,
+                    (int)pTmpInBufHeader->nOutputPortIndex,
                     (int)pTmpInBufHeader->nInputPortIndex);
-                
-	    	    pthread_mutex_unlock(&pSelf->m_inBufMutex);
-                
-        	    //*Mark current buffer if there is outstanding command
-		        if (pMarkBuf)
-		        {
-		            ((OMX_BUFFERHEADERTYPE *)(cmddata))->hMarkTargetComponent = &pSelf->m_cmp;
-		            ((OMX_BUFFERHEADERTYPE *)(cmddata))->pMarkData = pMarkBuf->pMarkData;
-		            pMarkBuf = NULL;
-		        }
-		    }
-	        else if (cmd == MarkBuf)
-	        {
-	            if (!pMarkBuf)
-	                pMarkBuf = (OMX_MARKTYPE *)(cmddata);
-	        }
+
+                pthread_mutex_unlock(&pSelf->m_inBufMutex);
+
+                //*Mark current buffer if there is outstanding command
+                if (pMarkBuf)
+                {
+                    ((OMX_BUFFERHEADERTYPE *)(cmddata))->hMarkTargetComponent = &pSelf->m_cmp;
+                    ((OMX_BUFFERHEADERTYPE *)(cmddata))->pMarkData = pMarkBuf->pMarkData;
+                    pMarkBuf = NULL;
+                }
+            }
+            else if (cmd == MarkBuf)
+            {
+                if (!pMarkBuf)
+                    pMarkBuf = (OMX_MARKTYPE *)(cmddata);
+            }
             else if(cmd == VdrvNotifyEos)
             {
                 nVdrvNotifyEosFlag = OMX_TRUE;
@@ -3155,15 +3158,15 @@ static void* ComponentThread(void* pThreadData)
             {
                 logw("(f:%s, l:%d) ", __FUNCTION__, __LINE__);
             }
-	    }
+        }
 
         //*Buffer processing
         // Only happens when the component is in executing state.
         if (pSelf->m_state == OMX_StateExecuting  &&
-        	pSelf->m_sInPortDef.bEnabled          &&
-        	pSelf->m_sOutPortDef.bEnabled         &&
-        	port_setting_match                    &&
-        	(pSelf->mResolutionChangeFlag == OMX_FALSE))
+            pSelf->m_sInPortDef.bEnabled          &&
+            pSelf->m_sOutPortDef.bEnabled         &&
+            port_setting_match                    &&
+            (pSelf->mResolutionChangeFlag == OMX_FALSE))
         {
             if(OMX_TRUE == pSelf->m_JumpFlag)
             {
@@ -3181,9 +3184,9 @@ static void* ComponentThread(void* pThreadData)
                 if(pInBufHdr == NULL)
                 {
                     logd("(f:%s, l:%d) fatal error! pInBufHdr is NULL, check code!", __FUNCTION__, __LINE__);
-                	break;
+                    break;
                 }
-                
+
                 pSelf->mFirstInputDataFlag = OMX_FALSE;
                 logv("*** the first pInBufHdr->nFlags = 0x%x, pInBufHdr->nFilledLen=%lu",(int)pInBufHdr->nFlags, pInBufHdr->nFilledLen);
                 if (pInBufHdr->nFlags & OMX_BUFFERFLAG_CODECCONFIG) //*test 1 extradata
@@ -3202,9 +3205,9 @@ static void* ComponentThread(void* pThreadData)
 
                     pSelf->m_sInBufList.nSizeOfList--;
                     pSelf->m_sInBufList.nReadPos++;
-                	if (pSelf->m_sInBufList.nReadPos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
-                		pSelf->m_sInBufList.nReadPos = 0;
-                    
+                    if (pSelf->m_sInBufList.nReadPos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
+                        pSelf->m_sInBufList.nReadPos = 0;
+
                     pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pInBufHdr);
                 }
                 else
@@ -3216,27 +3219,27 @@ static void* ComponentThread(void* pThreadData)
 
                 }
             }
-        
+
             if(pSelf->m_decoder!=NULL)
             {
                 //*fill buffer first
-       		    while(0==ValidPictureNum(pSelf->m_decoder,0) && pSelf->m_sInBufList.nSizeOfList>0)
+                   while(0==ValidPictureNum(pSelf->m_decoder,0) && pSelf->m_sInBufList.nSizeOfList>0)
                 {
-                	char* pBuf0;
-                	char* pBuf1;
-                	int   size0;
-                	int   size1;
-                	int   require_size;
-                	unsigned char*   pData;
+                    char* pBuf0;
+                    char* pBuf1;
+                    int   size0;
+                    int   size1;
+                    int   require_size;
+                    unsigned char*   pData;
                     VideoStreamDataInfo DataInfo;
 
                     memset(&DataInfo, 0, sizeof(VideoStreamDataInfo));
-        			pInBufHdr = pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos];
+                    pInBufHdr = pSelf->m_sInBufList.pBufHdrList[pSelf->m_sInBufList.nReadPos];
 
                     if(pInBufHdr == NULL)
                     {
                         logd("(f:%s, l:%d) fatal error! pInBufHdr is NULL, check code!", __FUNCTION__, __LINE__);
-                    	break;
+                        break;
                     }
 
                     //*add stream to decoder.
@@ -3244,11 +3247,11 @@ static void* ComponentThread(void* pThreadData)
                     if(RequestVideoStreamBuffer(pSelf->m_decoder, require_size, &pBuf0, &size0, &pBuf1, &size1,0) != 0)
                     {
                         logi("(f:%s, l:%d)req vbs fail! maybe vbs buffer is full! require_size[%d]", __FUNCTION__, __LINE__, require_size);
-        				//*report a fatal error.
+                        //*report a fatal error.
                         //pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorHardware, 0, NULL);
                         break;
                     }
-                    
+
                     DataInfo.nLength      = require_size;
                     DataInfo.bIsFirstPart = 1;
                     DataInfo.bIsLastPart  = 1;
@@ -3263,18 +3266,18 @@ static void* ComponentThread(void* pThreadData)
                         DataInfo.nPts   = -1;
                         DataInfo.bValid = 0;
                     }
-                    
+
                     if(require_size <= size0)
                     {
-                    	pData = pInBufHdr->pBuffer + pInBufHdr->nOffset;
-                    	memcpy(pBuf0, pData, require_size);
+                        pData = pInBufHdr->pBuffer + pInBufHdr->nOffset;
+                        memcpy(pBuf0, pData, require_size);
                     }
                     else
                     {
-                    	pData = pInBufHdr->pBuffer + pInBufHdr->nOffset;
-                    	memcpy(pBuf0, pData, size0);
-                    	pData += size0;
-                    	memcpy(pBuf1, pData, require_size - size0);
+                        pData = pInBufHdr->pBuffer + pInBufHdr->nOffset;
+                        memcpy(pBuf0, pData, size0);
+                        pData += size0;
+                        memcpy(pBuf1, pData, require_size - size0);
                     }
                     SubmitVideoStreamData(pSelf->m_decoder, &DataInfo,0);
 
@@ -3283,8 +3286,8 @@ static void* ComponentThread(void* pThreadData)
                     {
                         if (pInBufHdr->nFlags & OMX_BUFFERFLAG_EOS)
                         {
-        	                //*Copy flag to output buffer header
-                        	nInBufEos = OMX_TRUE;
+                            //*Copy flag to output buffer header
+                            nInBufEos = OMX_TRUE;
                             usleep(5*1000);
                             post_message_to_vdrv(pSelf, OMX_VdrvCommand_EndOfStream);
                             sem_post(&pSelf->m_sem_vbs_input);
@@ -3293,32 +3296,32 @@ static void* ComponentThread(void* pThreadData)
                             sem_wait(&pSelf->m_vdrv_cmd_lock);
                             logd("(f:%s, l:%d) wait for OMX_VdrvCommand_EndOfStream done!", __FUNCTION__, __LINE__);
 
-            	        	logd(" set up nInBufEos flag.");
+                            logd(" set up nInBufEos flag.");
 
-         	                //*Trigger event handler
+                             //*Trigger event handler
                             pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventBufferFlag, 0x1, pInBufHdr->nFlags, NULL);
 
-         		            //*Clear flag
-        		            pInBufHdr->nFlags = 0;
-        	            }
+                             //*Clear flag
+                            pInBufHdr->nFlags = 0;
+                        }
 
-        	            //*Check for mark buffers
-        	            if (pInBufHdr->pMarkData)
-        	            {
+                        //*Check for mark buffers
+                        if (pInBufHdr->pMarkData)
+                        {
                             //*Copy mark to output buffer header
-        	                if (pOutBufHdr)
-        	                {
-        	                    pMarkData = pInBufHdr->pMarkData;
+                            if (pOutBufHdr)
+                            {
+                                pMarkData = pInBufHdr->pMarkData;
                                 //*Copy handle to output buffer header
                                 hMarkTargetComponent = pInBufHdr->hMarkTargetComponent;
                             }
-         		        }
+                         }
 
-        		        //*Trigger event handler
-        	            if (pInBufHdr->hMarkTargetComponent == &pSelf->m_cmp && pInBufHdr->pMarkData)
-        	            	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventMark, 0, 0, pInBufHdr->pMarkData);
+                        //*Trigger event handler
+                        if (pInBufHdr->hMarkTargetComponent == &pSelf->m_cmp && pInBufHdr->pMarkData)
+                            pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventMark, 0, 0, pInBufHdr->pMarkData);
                     }
-                    
+
                     pSelf->m_Callbacks.EmptyBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pInBufHdr);
 
                     //*notify vdrvThread vbs input
@@ -3337,36 +3340,36 @@ static void* ComponentThread(void* pThreadData)
                     else
                     {
                         logw("(f:%s, l:%d) fatal error, why sem getvalue of m_sem_vbs_input[%d] fail!", __FUNCTION__, __LINE__, nRetSemGetValue);
-                    }                      	        
+                    }
 
                     //* check if there is a input bit stream.
                     pthread_mutex_lock(&pSelf->m_inBufMutex);
-    				
-                	pSelf->m_sInBufList.nSizeOfList--;
-                    pSelf->m_sInBufList.nReadPos++;
-                	if (pSelf->m_sInBufList.nReadPos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
-                		pSelf->m_sInBufList.nReadPos = 0;
 
-    				/*for cts, using for synchronization between inputbuffer and outputbuffer*/
-    				pSelf->m_InputNum ++;
-    				if ((pSelf->mIsFromCts == true)/* && ((pSelf->m_InputNum - pSelf->m_OutputNum) > 3)*/) 
+                    pSelf->m_sInBufList.nSizeOfList--;
+                    pSelf->m_sInBufList.nReadPos++;
+                    if (pSelf->m_sInBufList.nReadPos >= (OMX_S32)pSelf->m_sInBufList.nAllocSize)
+                        pSelf->m_sInBufList.nReadPos = 0;
+
+                    /*for cts, using for synchronization between inputbuffer and outputbuffer*/
+                    pSelf->m_InputNum ++;
+                    if ((pSelf->mIsFromCts == true)/* && ((pSelf->m_InputNum - pSelf->m_OutputNum) > 3)*/)
                     {
-    					usleep(20000);
-    				}
-    				else
-    				{
-    					usleep(10000); 
-    				}
+                        usleep(20000);
+                    }
+                    else
+                    {
+                        usleep(10000);
+                    }
                     pthread_mutex_unlock(&pSelf->m_inBufMutex);
 
-        		}
-            
-        	    //*check if there is a picture to output.
-        	    if(ValidPictureNum(pSelf->m_decoder,0))
-            	{
+                }
+
+                //*check if there is a picture to output.
+                if(ValidPictureNum(pSelf->m_decoder,0))
+                {
                     int width_align  = 0;
                     int height_align = 0;
-                    
+
                     //* check if the picture size changed.
                     picture = NextPictureInfo(pSelf->m_decoder,0);
 
@@ -3383,43 +3386,43 @@ static void* ComponentThread(void* pThreadData)
                         width_align  = picture->nWidth;
                         height_align = picture->nHeight;
                     }
-                    
+
                     //* make the height to 2 align
                     height_align = (height_align + 1) & ~1;
-                    
-                	if((OMX_U32)width_align != pSelf->m_sOutPortDef.format.video.nFrameWidth || (OMX_U32)height_align != pSelf->m_sOutPortDef.format.video.nFrameHeight)
-                	{
-                		logw(" port setting changed., org_height = %d, org_width = %d, new_height = %d, new_width = %d.",
-                				(int)pSelf->m_sOutPortDef.format.video.nFrameHeight,
-                				(int)pSelf->m_sOutPortDef.format.video.nFrameWidth,
-                				(int)height_align, (int)width_align);
 
-                		pSelf->m_sOutPortDef.format.video.nFrameHeight = height_align;
-                		pSelf->m_sOutPortDef.format.video.nFrameWidth = width_align;
+                    if((OMX_U32)width_align != pSelf->m_sOutPortDef.format.video.nFrameWidth || (OMX_U32)height_align != pSelf->m_sOutPortDef.format.video.nFrameHeight)
+                    {
+                        logw(" port setting changed., org_height = %d, org_width = %d, new_height = %d, new_width = %d.",
+                                (int)pSelf->m_sOutPortDef.format.video.nFrameHeight,
+                                (int)pSelf->m_sOutPortDef.format.video.nFrameWidth,
+                                (int)height_align, (int)width_align);
+
+                        pSelf->m_sOutPortDef.format.video.nFrameHeight = height_align;
+                        pSelf->m_sOutPortDef.format.video.nFrameWidth = width_align;
                         pSelf->m_sOutPortDef.nBufferSize = height_align*width_align *3/2;
-                		port_setting_match = OMX_FALSE;
-    					pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventPortSettingsChanged, 0x01/*pSelf->m_sOutPortDef.nPortIndex*/, 0, NULL);
-    					continue;
-                	}
+                        port_setting_match = OMX_FALSE;
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventPortSettingsChanged, 0x01/*pSelf->m_sOutPortDef.nPortIndex*/, 0, NULL);
+                        continue;
+                    }
 
 
                     pthread_mutex_lock(&pSelf->m_outBufMutex);
 
                     if(pSelf->m_sOutBufList.nSizeOfList > 0)
                     {
-                    	pSelf->m_sOutBufList.nSizeOfList--;
-                    	pOutBufHdr = pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++];
-                    	if (pSelf->m_sOutBufList.nReadPos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize)
-                    		pSelf->m_sOutBufList.nReadPos = 0;
+                        pSelf->m_sOutBufList.nSizeOfList--;
+                        pOutBufHdr = pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++];
+                        if (pSelf->m_sOutBufList.nReadPos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize)
+                            pSelf->m_sOutBufList.nReadPos = 0;
                     }
                     else
-                    	pOutBufHdr = NULL;
+                        pOutBufHdr = NULL;
 
                     pthread_mutex_unlock(&pSelf->m_outBufMutex);
 
                     //* if no output buffer, wait for some time.
-                	if(pOutBufHdr == NULL)
-                	{
+                    if(pOutBufHdr == NULL)
+                    {
                         if(0 == waitPipeDataToRead(pSelf->m_cmdpipe[0], 40*1000))
                         {
                             //logv("(f:%s, l:%d) no output frame, wait 40ms for msg, interval=[%lld]ms", __FUNCTION__, __LINE__, (tm2-tm1)/1000);
@@ -3431,35 +3434,35 @@ static void* ComponentThread(void* pThreadData)
                         continue;
                     }
 
-                	picture = RequestPicture(pSelf->m_decoder, 0);
+                    picture = RequestPicture(pSelf->m_decoder, 0);
                     //convertAddress_Phy2Vir(picture);
 
-                	//*transform picture color format.
-                	
-                	logv("(omx_vdec, f:%s, l:%d) m_useAndroidBuffer = %d", __FUNCTION__, __LINE__,(int)pSelf->m_useAndroidBuffer);
-                	if(pSelf->m_useAndroidBuffer == OMX_FALSE)
-                	{
-                		
+                    //*transform picture color format.
+
+                    logv("(omx_vdec, f:%s, l:%d) m_useAndroidBuffer = %d", __FUNCTION__, __LINE__,(int)pSelf->m_useAndroidBuffer);
+                    if(pSelf->m_useAndroidBuffer == OMX_FALSE)
+                    {
+
 #if OPEN_LINUX_STATISTICS
-                        int64_t start, end;                            
+                        int64_t start, end;
                         start = OMX_GetNowUs();
 #endif
                         MemAdapterFlushCache(picture->pData0, picture->nWidth* picture->nHeight* 2);
 
                         TransformToYUVPlaner(picture, pOutBufHdr->pBuffer);
-                        
+
 #if OPEN_LINUX_STATISTICS
                         end = OMX_GetNowUs();
                         pSelf->mConvertTotalDuration += (end-start);
                         pSelf->mConvertTotalCount++;
                         logd("xxxxxxxxxxx cur TransformYV12ToYUV420 time:%.3f, avg time:%.3f", (float)(end-start)/1000.0, (float)pSelf->mConvertTotalDuration/pSelf->mConvertTotalCount/1000);
 #endif
-                	}
+                    }
 
-                	pOutBufHdr->nTimeStamp = picture->nPts;
-                	pOutBufHdr->nOffset    = 0;
-                    
-#if( CONFIG_OS == OPTION_OS_ANDROID && CONFIG_OS_VERSION>=OPTION_OS_VERSION_ANDROID_4_4)              
+                    pOutBufHdr->nTimeStamp = picture->nPts;
+                    pOutBufHdr->nOffset    = 0;
+
+#if( CONFIG_OS == OPTION_OS_ANDROID && CONFIG_OS_VERSION>=OPTION_OS_VERSION_ANDROID_4_4)
                     if(pSelf->m_storeOutputMetaDataFlag==OMX_TRUE)
                         pOutBufHdr->nFilledLen = sizeof(VideoDecoderOutputMetaData);
                     else
@@ -3487,72 +3490,72 @@ static void* ComponentThread(void* pThreadData)
                         logw("(f:%s, l:%d) fatal error, why sem getvalue of m_sem_frame_output[%d] fail!", __FUNCTION__, __LINE__, nRetSemGetValue);
                     }
 
-    	            //*Check for mark buffers
-    	            if (pMarkData != NULL && hMarkTargetComponent != NULL)
-    	            {
-                    	if(!ValidPictureNum(pSelf->m_decoder,0))
-                    	{
-                    		//*Copy mark to output buffer header
-                    		pOutBufHdr->pMarkData = pInBufHdr->pMarkData;
-                    		//*Copy handle to output buffer header
-                    		pOutBufHdr->hMarkTargetComponent = pInBufHdr->hMarkTargetComponent;
+                    //*Check for mark buffers
+                    if (pMarkData != NULL && hMarkTargetComponent != NULL)
+                    {
+                        if(!ValidPictureNum(pSelf->m_decoder,0))
+                        {
+                            //*Copy mark to output buffer header
+                            pOutBufHdr->pMarkData = pInBufHdr->pMarkData;
+                            //*Copy handle to output buffer header
+                            pOutBufHdr->hMarkTargetComponent = pInBufHdr->hMarkTargetComponent;
 
-                    		pMarkData = NULL;
-                    		hMarkTargetComponent = NULL;
-                    	}
-     		        }
+                            pMarkData = NULL;
+                            hMarkTargetComponent = NULL;
+                        }
+                     }
 
                     logi("****FillBufferDone is called, nSizeOfList[%d], pts[%lld], nAllocLen[%d], nFilledLen[%d], nOffset[%d], nFlags[0x%x], nOutputPortIndex[%d], nInputPortIndex[%d]",
-                        (int)pSelf->m_sOutBufList.nSizeOfList, 
-                             pOutBufHdr->nTimeStamp, 
-                        (int)pOutBufHdr->nAllocLen, 
-                        (int)pOutBufHdr->nFilledLen, 
-                        (int)pOutBufHdr->nOffset, 
-                        (int)pOutBufHdr->nFlags, 
-                        (int)pOutBufHdr->nOutputPortIndex, 
+                        (int)pSelf->m_sOutBufList.nSizeOfList,
+                             pOutBufHdr->nTimeStamp,
+                        (int)pOutBufHdr->nAllocLen,
+                        (int)pOutBufHdr->nFilledLen,
+                        (int)pOutBufHdr->nOffset,
+                        (int)pOutBufHdr->nFlags,
+                        (int)pOutBufHdr->nOutputPortIndex,
                         (int)pOutBufHdr->nInputPortIndex);
 
-    				pSelf->m_OutputNum ++;
+                    pSelf->m_OutputNum ++;
                     pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pOutBufHdr);
                     pOutBufHdr = NULL;
 
                     continue;
-            	}
+                }
                 else
                 {
-                	logi("LINE %d, nInBufEos %d, nVdrvNotifyEosFlag %d", __LINE__,  nInBufEos, nVdrvNotifyEosFlag);
-                	if (/*nInBufEos || */nVdrvNotifyEosFlag) {
-                        
-                        //*set eos flag, MediaCodec use this flag
-                    	// to determine whether a playback is finished.
-                    	pthread_mutex_lock(&pSelf->m_outBufMutex);
+                    logi("LINE %d, nInBufEos %d, nVdrvNotifyEosFlag %d", __LINE__,  nInBufEos, nVdrvNotifyEosFlag);
+                    if (/*nInBufEos || */nVdrvNotifyEosFlag) {
 
-                    	while (pSelf->m_sOutBufList.nSizeOfList > 0) {
-                    		pSelf->m_sOutBufList.nSizeOfList--;
-                    		pOutBufHdr = pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++];
-                    		if (pSelf->m_sOutBufList.nReadPos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize) {
-                    			pSelf->m_sOutBufList.nReadPos = 0;
-                    		}
+                        //*set eos flag, MediaCodec use this flag
+                        // to determine whether a playback is finished.
+                        pthread_mutex_lock(&pSelf->m_outBufMutex);
+
+                        while (pSelf->m_sOutBufList.nSizeOfList > 0) {
+                            pSelf->m_sOutBufList.nSizeOfList--;
+                            pOutBufHdr = pSelf->m_sOutBufList.pBufHdrList[pSelf->m_sOutBufList.nReadPos++];
+                            if (pSelf->m_sOutBufList.nReadPos >= (OMX_S32)pSelf->m_sOutBufList.nAllocSize) {
+                                pSelf->m_sOutBufList.nReadPos = 0;
+                            }
 
                             if(pOutBufHdr==NULL)
                                 continue;
-                            
-                    		if (pOutBufHdr->nFilledLen != 0) {
-                        		pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pOutBufHdr);
-                        		pOutBufHdr = NULL;
-                    		}
-                    		else {
-                    			pOutBufHdr->nFlags |= OMX_BUFFERFLAG_EOS;
-                    			pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pOutBufHdr);
-                        		pOutBufHdr = NULL;
-                        		nInBufEos = OMX_FALSE;
-                        		nVdrvNotifyEosFlag = OMX_FALSE;
-                        		break;
-                    		}
-                    	}
-                    	pthread_mutex_unlock(&pSelf->m_outBufMutex);
+
+                            if (pOutBufHdr->nFilledLen != 0) {
+                                pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pOutBufHdr);
+                                pOutBufHdr = NULL;
+                            }
+                            else {
+                                pOutBufHdr->nFlags |= OMX_BUFFERFLAG_EOS;
+                                pSelf->m_Callbacks.FillBufferDone(&pSelf->m_cmp, pSelf->m_pAppData, pOutBufHdr);
+                                pOutBufHdr = NULL;
+                                nInBufEos = OMX_FALSE;
+                                nVdrvNotifyEosFlag = OMX_FALSE;
+                                break;
+                            }
+                        }
+                        pthread_mutex_unlock(&pSelf->m_outBufMutex);
                     }
-                        
+
                     if(0 == waitPipeDataToRead(pSelf->m_cmdpipe[0], 20*1000))
                     {
                         //logv("(f:%s, l:%d) no vdeclib frame, wait 20ms for msg, interval=[%lld]ms", __FUNCTION__, __LINE__, (tm2-tm1)/1000);
@@ -3572,7 +3575,7 @@ EXIT:
 
 static void* ComponentVdrvThread(void* pThreadData)
 {
-	int                     decodeResult;
+    int                     decodeResult;
 
     int                     i;
     int                     fd1;
@@ -3587,7 +3590,7 @@ static void* ComponentVdrvThread(void* pThreadData)
     int nRetSemGetValue;
     int nStopFlag = 0;
     int nVdrvResolutionChangeFlag = 0;
-    
+
     // Recover the pointer to my component specific data
     omx_vdec* pSelf = (omx_vdec*)pThreadData;
 
@@ -3615,61 +3618,61 @@ static void* ComponentVdrvThread(void* pThreadData)
             logd("(f:%s, l:%d) vdrvThread receive cmd[0x%x]", __FUNCTION__, __LINE__, cmd);
 
             // State transition command
-	        if (cmd == OMX_VdrvCommand_PrepareVdecLib)  //now omx_vdec's m_state = OMX_StateLoaded, OMX_StateLoaded->OMX_StateIdle
-	        {
-    	        	logd("(f:%s, l:%d)(OMX_VdrvCommand_PrepareVdecLib)", __FUNCTION__, __LINE__);
+            if (cmd == OMX_VdrvCommand_PrepareVdecLib)  //now omx_vdec's m_state = OMX_StateLoaded, OMX_StateLoaded->OMX_StateIdle
+            {
+                    logd("(f:%s, l:%d)(OMX_VdrvCommand_PrepareVdecLib)", __FUNCTION__, __LINE__);
 
                     // If the parameter states a transition to the same state
                     // raise a same state transition error.
                     if (pSelf->m_state != OMX_StateExecuting)
                     {
-                    	logw("fatal error! when vdrv OMX_VdrvCommand_PrepareVdecLib, m_state[0x%x] should be OMX_StateExecuting", pSelf->m_state);
+                        logw("fatal error! when vdrv OMX_VdrvCommand_PrepareVdecLib, m_state[0x%x] should be OMX_StateExecuting", pSelf->m_state);
                     }
 
-                    //*if mdecoder had closed before, we should create it 
-    				if(pSelf->m_decoder==NULL)
+                    //*if mdecoder had closed before, we should create it
+                    if(pSelf->m_decoder==NULL)
                         pSelf->m_decoder = CreateVideoDecoder();
-                    
-                	//* set video stream info.
-                	VConfig m_videoConfig;
+
+                    //* set video stream info.
+                    VConfig m_videoConfig;
                     memset(&m_videoConfig,0,sizeof(VConfig));
-                    
+
                     //*set yv12
                     m_videoConfig.eOutputPixelFormat = PIXEL_FORMAT_YUV_MB32_420; //* test MB32
                     //m_videoConfig.eOutputPixelFormat = PIXEL_FORMAT_DEFAULT;
-#if (CONFIG_PRODUCT == OPTION_PRODUCT_TVBOX)					
-					// omx decoder make out buffer no more than 1920x1080
-					if (pSelf->m_streamInfo.nWidth > 1920
-						&& pSelf->m_streamInfo.nHeight > 1088)
-					{
-						m_videoConfig.bScaleDownEn = 1;
-						m_videoConfig.nHorizonScaleDownRatio = 1;
-						m_videoConfig.nVerticalScaleDownRatio = 1;
-					}
+#if (CONFIG_PRODUCT == OPTION_PRODUCT_TVBOX)
+                    // omx decoder make out buffer no more than 1920x1080
+                    if (pSelf->m_streamInfo.nWidth > 1920
+                        && pSelf->m_streamInfo.nHeight > 1088)
+                    {
+                        m_videoConfig.bScaleDownEn = 1;
+                        m_videoConfig.nHorizonScaleDownRatio = 1;
+                        m_videoConfig.nVerticalScaleDownRatio = 1;
+                    }
 #endif
-                	if(InitializeVideoDecoder(pSelf->m_decoder, &(pSelf->m_streamInfo),&m_videoConfig) != 0)
-                	{
-                    	pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorHardware, 0 , NULL);
-    	                logw("Idle transition failed, set_vstream_info() return fail.\n");
+                    if(InitializeVideoDecoder(pSelf->m_decoder, &(pSelf->m_streamInfo),&m_videoConfig) != 0)
+                    {
+                        pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorHardware, 0 , NULL);
+                        logw("Idle transition failed, set_vstream_info() return fail.\n");
                         goto __EXECUTE_CMD_DONE;
-                	}
-                
-	        }
-	        else if (cmd == OMX_VdrvCommand_CloseVdecLib)// now omx_vdec's m_state = OMX_StateLoaded, OMX_StateIdle->OMX_StateLoaded
-	        {
+                    }
+
+            }
+            else if (cmd == OMX_VdrvCommand_CloseVdecLib)// now omx_vdec's m_state = OMX_StateLoaded, OMX_StateIdle->OMX_StateLoaded
+            {
                 logd("(f:%s, l:%d)(OMX_VdrvCommand_CloseVdecLib)", __FUNCTION__, __LINE__);
 
                 //* stop and close decoder.
                 if(pSelf->m_decoder != NULL)
                 {
-                	DestroyVideoDecoder(pSelf->m_decoder);
+                    DestroyVideoDecoder(pSelf->m_decoder);
                     pSelf->m_decoder           = NULL;
                     pSelf->mFirstInputDataFlag = OMX_TRUE;
                 }
-	        }
-            
-	        else if (cmd == OMX_VdrvCommand_FlushVdecLib)
-	        {
+            }
+
+            else if (cmd == OMX_VdrvCommand_FlushVdecLib)
+            {
                 logd("(f:%s, l:%d)(OMX_VdrvCommand_FlushVdecLib)", __FUNCTION__, __LINE__);
                 if(pSelf->m_decoder)
                 {
@@ -3679,24 +3682,24 @@ static void* ComponentVdrvThread(void* pThreadData)
                 {
                     logw(" fatal error, m_decoder is not malloc when flush all ports!");
                 }
-	        }
-	        else if (cmd == OMX_VdrvCommand_Stop)
-	        {
+            }
+            else if (cmd == OMX_VdrvCommand_Stop)
+            {
                 logd("(f:%s, l:%d)(OMX_VdrvCommand_Stop)", __FUNCTION__, __LINE__);
                 nStopFlag = 1;
-	        }
-	        else if (cmd == OMX_VdrvCommand_EndOfStream)
-	        {
+            }
+            else if (cmd == OMX_VdrvCommand_EndOfStream)
+            {
                 logd("(f:%s, l:%d)(OMX_VdrvCommand_EndOfStream)", __FUNCTION__, __LINE__);
                 nEosFlag = OMX_TRUE;
-	        }
-	        else
-	        {
+            }
+            else
+            {
                 logw("(f:%s, l:%d)fatal error! unknown OMX_VDRV_COMMANDTYPE[0x%x]", __FUNCTION__, __LINE__, cmd);
-	        }
-            
+            }
+
 __EXECUTE_CMD_DONE:
-    
+
             nRetSemGetValue=sem_getvalue(&pSelf->m_vdrv_cmd_lock, &nSemVal);
             if(0 == nRetSemGetValue)
             {
@@ -3713,13 +3716,13 @@ __EXECUTE_CMD_DONE:
             {
                 logw("(f:%s, l:%d) fatal error, why sem getvalue[%d] fail!", __FUNCTION__, __LINE__, nRetSemGetValue);
             }
-	    }
+        }
         if(nStopFlag)
         {
             logd("vdrvThread detect nStopFlag[%d], exit!", nStopFlag);
             goto EXIT;
-		}
-        
+        }
+
         //*Buffer processing
         // Only happens when the component is in executing state.
         if ((pSelf->m_state == OMX_StateExecuting || pSelf->m_state == OMX_StatePause)
@@ -3727,15 +3730,15 @@ __EXECUTE_CMD_DONE:
             &&(nVdrvResolutionChangeFlag == 0))
         {
           #if (OPEN_STATISTICS)
-			nTimeUs1 = OMX_GetNowUs();
+            nTimeUs1 = OMX_GetNowUs();
           #endif
-          
-			decodeResult = DecodeVideoStream(pSelf->m_decoder,0,0,0,0);
+
+            decodeResult = DecodeVideoStream(pSelf->m_decoder,0,0,0,0);
             logi("***decodeResult = %d",decodeResult);
-            
+
           #if (OPEN_STATISTICS)
             nTimeUs2 = OMX_GetNowUs();
-          
+
             if(decodeResult == CEDARV_RESULT_FRAME_DECODED || decodeResult == CEDARV_RESULT_KEYFRAME_DECODED)
             {
                 pSelf->mDecodeFrameTotalDuration += (nTimeUs2-nTimeUs1);
@@ -3763,31 +3766,31 @@ __EXECUTE_CMD_DONE:
             }
           #endif
 
-			if(decodeResult == VDECODE_RESULT_KEYFRAME_DECODED ||
-			   decodeResult == VDECODE_RESULT_FRAME_DECODED ||
-			   decodeResult == VDECODE_RESULT_OK)
-			{
-			    //*do nothing
-			}
+            if(decodeResult == VDECODE_RESULT_KEYFRAME_DECODED ||
+               decodeResult == VDECODE_RESULT_FRAME_DECODED ||
+               decodeResult == VDECODE_RESULT_OK)
+            {
+                //*do nothing
+            }
             else if(decodeResult == VDECODE_RESULT_NO_FRAME_BUFFER)
             {
                 logi("(f:%s, l:%d) no_frame_buffer, wait!", __FUNCTION__, __LINE__);
                 sem_wait(&pSelf->m_sem_frame_output);
                 logi("(f:%s, l:%d) no_frame_buffer, wait_done!", __FUNCTION__, __LINE__);
             }
-			else if(decodeResult == VDECODE_RESULT_NO_BITSTREAM)
-			{
+            else if(decodeResult == VDECODE_RESULT_NO_BITSTREAM)
+            {
                 if(nEosFlag)
                 {
                     nEosFlag = OMX_FALSE;
 
                     //*set eos to decoder ,decoder should flush all fbm
                     DecodeVideoStream(pSelf->m_decoder,1,0,0,0);
-                    
-                	//*set eof flag, MediaCodec use this flag
-                	// to determine whether a playback is finished.
-                	
-                	logi("(f:%s, l:%d) when eos, vdrvtask meet no_bitstream, all frames have decoded, notify ComponentThread eos!", __FUNCTION__, __LINE__);
+
+                    //*set eof flag, MediaCodec use this flag
+                    // to determine whether a playback is finished.
+
+                    logi("(f:%s, l:%d) when eos, vdrvtask meet no_bitstream, all frames have decoded, notify ComponentThread eos!", __FUNCTION__, __LINE__);
                     pSelf->send_vdrv_feedback_msg(OMX_VdrvFeedbackMsg_NotifyEos, 0, NULL);
                     logi("(f:%s, l:%d) no_vbsinput_buffer, eos wait!", __FUNCTION__, __LINE__);
                     sem_wait(&pSelf->m_sem_vbs_input);
@@ -3799,19 +3802,19 @@ __EXECUTE_CMD_DONE:
                     sem_wait(&pSelf->m_sem_vbs_input);
                     logi("(f:%s, l:%d) no_vbsinput_buffer, wait_done!", __FUNCTION__, __LINE__);
                 }
-			}
+            }
             else if(decodeResult == VDECODE_RESULT_RESOLUTION_CHANGE)
             {
                 nVdrvResolutionChangeFlag = 1;
                 pSelf->send_vdrv_feedback_msg(OMX_VdrvFeedbackMsg_ResolutionChange, 1, NULL);
             }
-			else if(decodeResult < 0)
-			{
+            else if(decodeResult < 0)
+            {
                 logw("decode fatal error[%d]", decodeResult);
-				//* report a fatal error.
+                //* report a fatal error.
                 pSelf->m_Callbacks.EventHandler(&pSelf->m_cmp, pSelf->m_pAppData, OMX_EventError, OMX_ErrorHardware, 0, NULL);
                 //break;
-			}
+            }
             else
             {
                 logd("decode ret[%d], ignore? why?", decodeResult);
@@ -3826,7 +3829,7 @@ __EXECUTE_CMD_DONE:
                 pSelf->mResolutionChangeFlag = OMX_FALSE;
                 nVdrvResolutionChangeFlag = 0;
             }
-            
+
             if(0 == waitPipeDataToRead(pSelf->m_vdrv_cmdpipe[0], 20*1000))
             {
                 //logv("(f:%s, l:%d) vdrvThread m_state[0x%x] is not OMX_StateExecuting or OMX_StatePause, wait 20ms for msg, interval=[%lld]ms", __FUNCTION__, __LINE__, pSelf->m_state, (tm2-tm1)/1000);

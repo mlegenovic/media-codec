@@ -53,7 +53,7 @@ void mp4_clear_status_reg(void);
 
 #define MBTYPE_ENTRY(p,b)      ( ((p & 0xF) << 4) | (b & 0xF) )
 
-const uint8_t gNewTAB_MBTYPE_B[128] = 
+const uint8_t gNewTAB_MBTYPE_B[128] =
 {
 
     // 0000000 - 0
@@ -151,7 +151,7 @@ const uint8_t gNewTAB_MBTYPE_B[128] =
 
 };
 // Macroblock type defines
-#define D_MBTYPE_INTRA        		0
+#define D_MBTYPE_INTRA              0
 #define D_MBTYPE_INTRA_Q            1
 #define D_MBTYPE_FORWARD_SKIPPED    2
 #define D_MBTYPE_FORWARD            3
@@ -233,8 +233,8 @@ Time: 2010/1/23
 *******************************************************************************/
 int32_t mp4_update_framerate(mp4_dec_ctx_t* ctx, uint32_t uFrmRate)
 {
-	ctx->videoStreamInfo.nFrameRate = uFrmRate;
-	ctx->videoStreamInfo.nFrameDuration = 1000*1000*1000/uFrmRate;
+    ctx->videoStreamInfo.nFrameRate = uFrmRate;
+    ctx->videoStreamInfo.nFrameDuration = 1000*1000*1000/uFrmRate;
     return 0;
 }
 
@@ -243,7 +243,7 @@ int32_t mp4_update_framerate(mp4_dec_ctx_t* ctx, uint32_t uFrmRate)
 int32_t GetSSC(MP4_STATE *mp4_state)
 {
     MP4_STREAM *ld = &mp4_state->bits;
-	if(1)
+    if(1)
     {
         uint32_t w,w0;
         int32_t n;
@@ -279,13 +279,13 @@ int32_t GetSSC(MP4_STATE *mp4_state)
 //If the data format is changed, here should be changed also.
 int32_t get_next_next_sliceMba(mp4_dec_ctx_t* ctx, int32_t nbits)
 {
-	MP4_STATE*   mp4_state;
+    MP4_STATE*   mp4_state;
     MP4_STREAM * ld;
     int32_t byte_offset1;
     uint8_t t1,t2,t3,t4;
     uint32_t value;
     uint8_t *tmpPtr;
-    
+
     mp4_state = &ctx->s;
     ld        = &mp4_state->bits;
 
@@ -324,7 +324,7 @@ int32_t get_next_next_sliceMba(mp4_dec_ctx_t* ctx, int32_t nbits)
         tmpPtr -= (ld->buf_end_ptr - ld->buf_start_ptr + 1);
     t4 = *tmpPtr;
     value = (t1<<24) | (t2<<16) | (t3<<8) | t4;
-	
+
     if(mp4_state->m_pctszSize > 0)
         value <<= mp4_state->m_pctszSize;
     value >>= (32-nbits);
@@ -339,7 +339,7 @@ int32_t mp4_getgobhdr(mp4_dec_ctx_t* ctx, int32_t gob_index)
     uint32_t start_bit_pos,end_bit_pos,bit_length;
     int32_t m_mbaSize,next_sliceMba,display_time=0,sliceMba=0;
     int32_t i,j;
-    
+
     mp4_state = &ctx->s;
 
     ld = &mp4_state->bits;
@@ -395,7 +395,7 @@ int32_t mp4_getgobhdr(mp4_dec_ctx_t* ctx, int32_t gob_index)
                     {
                         mp4_state->hdr.trd = mp4_state->hdr.display_time_next - mp4_state->hdr.display_time_prev;
                         if(mp4_state->hdr.trd<0)
-                            mp4_state->hdr.trd += 8192;    
+                            mp4_state->hdr.trd += 8192;
                     }
                 }
                 else {
@@ -419,7 +419,7 @@ int32_t mp4_getgobhdr(mp4_dec_ctx_t* ctx, int32_t gob_index)
             {
                 if (mp4_getbits(ld, 17) != (uint32_t)RESYNC_MARKER)
                 {
-                    return -1; 
+                    return -1;
                 }
                 mp4_state->hdr.gob_number = mp4_getbits(ld, 5);
                 mp4_state->hdr.gob_frame_id = mp4_getbits(ld, 2);
@@ -468,13 +468,13 @@ int32_t mp4_getgobhdr(mp4_dec_ctx_t* ctx, int32_t gob_index)
 
         if(AdapterVeWaitInterrupt() == 0)
         {
-        	mp4_clear_status_reg();
+            mp4_clear_status_reg();
         }
         else
         {
-    		mp4_reset_ve_core(ctx);
-        	mp4_set_buffer(mp4_state);
-        	mp4_set_pic_size(mp4_state);
+            mp4_reset_ve_core(ctx);
+            mp4_set_buffer(mp4_state);
+            mp4_set_pic_size(mp4_state);
         }
 
         //after finish, get mba_addr, and bit offset
@@ -684,7 +684,7 @@ Read_not_coded:
     {
         mp4_state->hdr.mb_xpos++;
     }
-    else 
+    else
     {
         mp4_state->hdr.mb_ypos++;
         mp4_state->hdr.mb_xpos = 0;
@@ -767,17 +767,17 @@ int32_t mp4_getCBPY(MP4_STREAM * _ld, int32_t intraFlag)
     int32_t cbpy;
     int32_t code = mp4_showbits(ld, 6);
 
-    if (code < 2) 
+    if (code < 2)
     {
         return -1;
     }
 
-    if (code >= 48) 
+    if (code >= 48)
     {
         mp4_flushbits(ld, 2);
         cbpy = 15;
-    } 
-    else 
+    }
+    else
     {
         mp4_flushbits(ld, CBPYtab[code].len);
         cbpy = CBPYtab[code].val;
@@ -881,7 +881,7 @@ int32_t mp4_setMV_263B(MP4_STREAM * _ld, MP4_STATE * _mp4_state, int32_t mb_xpos
 
     int32_t i;
 
-    if (mode == DIRECT_MODE) 
+    if (mode == DIRECT_MODE)
     {
         vop_fcode = 1; // scale_fac == 1, residual will not be decoded
     }
@@ -906,7 +906,7 @@ int32_t mp4_setMV_263B(MP4_STREAM * _ld, MP4_STATE * _mp4_state, int32_t mb_xpos
 
     if ((scale_fac == 1) || (hor_mv_data == 0))
         mvd_x = hor_mv_data;
-    else 
+    else
     {
         hor_mv_res = mp4_getbits(ld, vop_fcode-1); // mv residual
         mvd_x = ((abs(hor_mv_data) - 1) * scale_fac) + hor_mv_res + 1;
@@ -918,7 +918,7 @@ int32_t mp4_setMV_263B(MP4_STREAM * _ld, MP4_STATE * _mp4_state, int32_t mb_xpos
 
     if ((scale_fac == 1) || (ver_mv_data == 0))
         mvd_y = ver_mv_data;
-    else 
+    else
     {
         ver_mv_res = mp4_getbits(ld, vop_fcode-1);
         mvd_y = ((abs(ver_mv_data) - 1) * scale_fac) + ver_mv_res + 1;
@@ -936,7 +936,7 @@ int32_t mp4_setMV_263B(MP4_STREAM * _ld, MP4_STATE * _mp4_state, int32_t mb_xpos
         pmv = mp4_h263_find_pmv(mp4_state, mb_xpos, mb_ypos, 0,FORWARD_MODE);
     else if (mode == BACKWARD_MODE)
         pmv = mp4_h263_find_pmv(mp4_state, mb_xpos, mb_ypos, 0,BACKWARD_MODE);
-    else if (mode == DIRECT_MODE) 
+    else if (mode == DIRECT_MODE)
     {
         // in this case the predictors are zero and the delta vector is extracted (MVDx, MVDy)
         pmv.x = pmv.y = 0;
@@ -949,7 +949,7 @@ int32_t mp4_setMV_263B(MP4_STREAM * _ld, MP4_STATE * _mp4_state, int32_t mb_xpos
     if (mv.x > high)
         mv.x -= range;
 
-        mv.y = pmv.y + mvd_y;
+    mv.y = pmv.y + mvd_y;
 
     if (mv.y < low)
         mv.y += range;
@@ -986,7 +986,7 @@ int32_t mp4_getDCsizeLum(MP4_STREAM * _ld)
 
     int32_t code;
 
-    if (mp4_showbits(ld, 11) == 1) 
+    if (mp4_showbits(ld, 11) == 1)
     {
         mp4_flushbits(ld, 11);
         return 12;
@@ -1029,7 +1029,7 @@ int32_t mp4_getDCsizeLum(MP4_STREAM * _ld)
 
     code = mp4_showbits(ld, 3);
 
-    if (code == 1) 
+    if (code == 1)
     {
         mp4_flushbits(ld, 3);
         return 4;
@@ -1297,24 +1297,24 @@ void mp4_config_interrupt_register(void)
 {
     volatile uint32_t* ve_top_reg;
     volatile uint32_t* ve_intr_ctrl_reg;
-    uint32_t 		  mode;
+    uint32_t           mode;
 
     ve_top_reg = (uint32_t*)ve_get_reglist(REG_GROUP_VETOP);
 
     mode = (*ve_top_reg) & 0xf;
-    
-	/* estimate Which video format */
+
+    /* estimate Which video format */
     switch (mode)
     {
         case 0: //mpeg124
             //ve_status_reg = (int *)(addrs.regs_macc + 0x100 + 0x1c);
             ve_intr_ctrl_reg = (uint32_t *)((uint32_t)ve_get_reglist(REG_GROUP_MPEG_DECODER) + 0x14);
-        	*ve_intr_ctrl_reg |= 0x7c;
+            *ve_intr_ctrl_reg |= 0x7c;
             break;
         default:
             break;
     }
-    
+
     return;
 }
 
@@ -1322,26 +1322,26 @@ void mp4_clear_status_reg(void)
 {
     volatile uint32_t* ve_top_reg;
     volatile uint32_t* ve_status_reg;
-    uint32_t 		  mode;
+    uint32_t           mode;
 
     ve_top_reg = (uint32_t*)ve_get_reglist(REG_GROUP_VETOP);
 
     mode = (*ve_top_reg) & 0xf;
-    
-	/* estimate Which video format */
+
+    /* estimate Which video format */
     switch (mode)
     {
         case 0: //mpeg124
             //ve_status_reg = (int *)(addrs.regs_macc + 0x100 + 0x1c);
             ve_status_reg = (uint32_t *)((uint32_t)ve_get_reglist(REG_GROUP_MPEG_DECODER) + 0x1c);
-        	*ve_status_reg |= 0xf;
+            *ve_status_reg |= 0xf;
             break;
         default:
             break;
     }
-    
+
     mp4_config_interrupt_register();
-    
+
     return;
 }
 
@@ -1351,20 +1351,20 @@ void mp4_ve_mode_select(uint8_t mode)
     uint32_t           tmp;
 
     ve_top_reg = (uint32_t*)ve_get_reglist(REG_GROUP_VETOP);
-    
-	/* estimate Which video format */
+
+    /* estimate Which video format */
     switch (mode)
     {
         case VE_MODE_MPEG124: //mpeg124
-        	tmp = *ve_top_reg;
-        	tmp &= ~0xf;
-        	tmp |= VE_MODE_MPEG124;
-        	*ve_top_reg = tmp;
+            tmp = *ve_top_reg;
+            tmp &= ~0xf;
+            tmp |= VE_MODE_MPEG124;
+            *ve_top_reg = tmp;
             break;
         default:
             break;
     }
-    
+
     return;
 }
 
@@ -1372,8 +1372,8 @@ void mp4_ve_mode_select(uint8_t mode)
 void mp4_set_deblk_dram_buf(MP4_STATE* s)
 {
     //* set VE Top 0x54 register.
-	uint32_t      tmp;
-	volatile vetop_reglist_t* listVeTop;
+    uint32_t      tmp;
+    volatile vetop_reglist_t* listVeTop;
 
     listVeTop = ve_get_reglist(REG_GROUP_VETOP);
 
@@ -1386,4 +1386,3 @@ void mp4_set_deblk_dram_buf(MP4_STATE* s)
 
     SetRegValue(listVeTop->_54_deblk_dram_buf, tmp);
 }
-

@@ -35,7 +35,7 @@
     #define LOG_LEVEL_DEBUG     ANDROID_LOG_DEBUG
     
     #define AWLOG(level, fmt, arg...)  \
-        LOG_PRI(level, LOG_TAG, "<%s:%u>: "fmt, strrchr(__FILE__, '/')+1, __LINE__, ##arg)
+        LOG_PRI(level, LOG_TAG, "<%s:%u>: " fmt, strrchr(__FILE__, '/')+1, __LINE__, ##arg)
         
 #elif CONFIG_OS == OPTION_OS_LINUX
     #include <stdio.h>
@@ -48,14 +48,14 @@
     #define LOG_LEVEL_DEBUG     "debug  "
     
     #define AWLOG(level, fmt, arg...)  \
-        printf("%s: %s <%s:%u>: "fmt"\n", level, LOG_TAG, __FILE__, __LINE__, ##arg)
+        printf("%s: %s <%s:%u>: " fmt "\n", level, LOG_TAG, __FILE__, __LINE__, ##arg)
 #else
     #error "invalid configuration of os."
 #endif
 
 #define loge(fmt, arg...) \
     do { \
-        AWLOG(LOG_LEVEL_ERROR, "\033[40;31m"fmt"\033[0m", ##arg) ; \
+        AWLOG(LOG_LEVEL_ERROR, "\033[40;31m" fmt "\033[0m", ##arg) ; \
         CdxBTDump(); \
     } while (0)
     
